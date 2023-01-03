@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>看番吧</title> 
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="/css/mytheme-ui.css" type="text/css" />
+<link rel="stylesheet" href="/css/mytheme-site.css" type="text/css" />
+<link rel="stylesheet" href="/css/mytheme-color.css" type="text/css" name="default" />
+<link rel="stylesheet" href="/css/mytheme-color.css" type="text/css" name="skin" disabled/>
+<link rel="stylesheet" href="/css/mytheme-color1.css" type="text/css" name="skin" disabled/>
+<link rel="stylesheet" href="/css/mytheme-color2.css" type="text/css" name="skin" disabled/>
+<link rel="stylesheet" href="/css/mytheme-color3.css" type="text/css" name="skin" disabled/>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/layer.js"></script>
+<script type="text/javascript" src="/js/mytheme-site.js"></script>
+<script type="text/javascript" src="/js/mytheme-ui.js"></script>
+<script type="text/javascript" src="/js/mytheme-cms.js"></script>
+<script type="text/javascript" src="/js/home.js"></script>
+
+<style type="text/css">
+	body{ font-family:"Microsoft YaHei", "微软雅黑", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;}
+	.myui-header__top{ position: relative; margin-bottom: 30px;}
+	 body.active .myui-header__top{ margin-bottom: 0;}	[class*=col-],.myui-content__list li,.myui-vodlist__media.col li{ padding: 10px}
+	.btn{ border-radius: 5px;}
+	.myui-vodlist__thumb{ border-radius:5px; padding-top:150%; background: url(/img/load.png) no-repeat;}
+	.myui-vodlist__thumb.square{ padding-top: 100%; background: url(/img/load_f.png) no-repeat;}
+	.myui-vodlist__thumb.wide{ padding-top: 60%; background: url(/img/load_w.png) no-repeat;}
+	.myui-vodlist__thumb.actor{ padding-top: 140%;}
+	.flickity-prev-next-button.previous{ left: 10px;}
+	.flickity-prev-next-button.next{ right: 10px;}
+	.myui-sidebar{ padding: 0 0 0 20px;}
+	.myui-panel{ margin-bottom: 20px; border-radius: 5px;}
+	.myui-panel-mb{ margin-bottom: 20px;}
+	.myui-player__item .fixed{ width: 500px;}
+	.myui-vodlist__text li a,.myui-vodlist__media li{ padding: 10px 0;}
+	.myui-screen__list{ padding: 10px 10px 0;}
+	.myui-screen__list li{ margin-bottom: 10px; margin-right: 10px;}
+	.myui-page{ padding: 0 10px;}
+	.myui-extra{ right: 20px; bottom: 30px;}
+	@media (min-width: 1200px){
+		.container{ max-width: 1920px;}
+		.container{ padding-left: 120px;  padding-right: 120px;}
+		.container.min{ width: 1200px; padding: 0;}
+	}
+	@media (max-width: 767px){
+		body,body.active{ padding-bottom: 50px;}
+		[class*=col-],.myui-panel,.myui-content__list li{ padding: 5px}
+		.flickity-prev-next-button.previous{ left: 5px;}
+		.flickity-prev-next-button.next{ right: 5px;}
+		.myui-vodlist__text li a,.myui-vodlist__media li{ padding: 10px 0;}
+		.myui-screen__list{ padding: 10px 5px 0;}
+		.myui-screen__list li{ margin-bottom: 5px; margin-right: 5px;}
+		.myui-extra{ right: 20px; bottom: 80px;}
+		.myui-page{ padding: 0 5px;}}
+		.myui-topbg{ position: absolute; top: 0; left: 0; right: 0; width: 100%; 	}
+</style>
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+	<body class="active">
+		
+		<header class="myui-header__top clearfix" id="header-top">
+	<div class="container">	
+		<div class="row">
+			<div class="myui-header_bd clearfix">					
+			    <div class="myui-header__logo">			    	
+					<a class="logo" href="/">
+						<img class="img-responsive hidden-xs" src="http://"/>
+						<img class="img-responsive visible-xs" src="http://"/>
+					</a>					
+				</div>
+
+<div class="myui-panel myui-panel-bg clearfix">
+	<div class="myui-panel-box clearfix">		
+		<div class="myui-panel_bd clearfix">
+			<div class="col-lg-wide-75 col-md-wide-75 col-xs-1 padding-0">		
+				<div class="myui-panel_hd">
+					<div class="myui-panel__head clearfix">				
+						<h3 class="title">
+							最新动漫电影						</h3>	
+						
+					</div>																			
+				</div>	
+				<ul class="myui-vodlist clearfix">
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/9322.html" title="我想吃掉你的胰脏" data-original="http://sakura.xonlines.com/upload/vod/20220621-1/a5985c5e97e3466d0758be6a91c4cd97.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">8.8分</span><span class="tag" style="background-color: #ff9900;">2018</span>		</span>
+		<span class="pic-text text-right">正片</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/9322.html" title="我想吃掉你的胰脏">我想吃掉你的胰脏</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：高杉真宙,Lynn,藤井雪代,内田雄马,福岛润,田中敦子,三木真一郎</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/9203.html" title="钢铁侠：噬甲危机" data-original="http://sakura.xonlines.com/upload/vod/20220613-1/d51322ec8598f47ccced325d055208a9.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">7.0分</span><span class="tag" style="background-color: #ff9900;">2013</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/9203.html" title="钢铁侠：噬甲危机">钢铁侠：噬甲危机</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：诺曼·瑞杜斯,马修·默瑟,凯瑞·华格伦,克莱尔·格兰特,特罗伊·贝克</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/9167.html" title="蓝精灵2" data-original="http://sakura.xonlines.com/upload/vod/20220606-1/65582589542b522d53cd71fd7329d581.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">2.0分</span><span class="tag" style="background-color: #ff9900;">2013</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/9167.html" title="蓝精灵2">蓝精灵2</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：尼尔·帕特里克·哈里斯,布莱丹·格里森,汉克·阿扎利亚,杰玛·梅斯,凯蒂·派瑞,克里斯蒂娜·里奇,乔纳森·温特斯,J·B·斯穆夫,乔治·洛佩兹,雅各布·特伦布莱,南希·奥黛尔,卡里姆·巴宾,安东·叶利钦,约翰·奥利弗,弗兰克·维尔克,程雷</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/4187.html" title="绿林大冒险" data-original="http://sakura.xonlines.com/FileUpload/2618.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">2.0分</span><span class="tag" style="background-color: #ff9900;">2013</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/4187.html" title="绿林大冒险">绿林大冒险</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：张安琪,李正翔</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10137.html" title="神奇的莫里斯" data-original="http://sakura.xonlines.com/upload/vod/20221229-1/babbb610716feb9e4aed2fd4969660fb.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">6.0分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10137.html" title="神奇的莫里斯">神奇的莫里斯</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：休·劳瑞,艾米莉亚·克拉克,大卫·休里斯,希米什·帕特尔,杰玛·阿特登,乔·萨格,阿利安·巴克瑞,朱莉·阿瑟顿,罗伯·布莱顿,休·博纳维尔,大卫·田纳特,杰瑞·霍夫曼,巴斯蒂安·帕斯特乌卡,简琳·雷哈尔德</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10107.html" title="灌篮高手2022" data-original="http://sakura.xonlines.com/upload/vod/20221215-1/00ba3780b8fb87c24fbf04b0c2214650.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">6.0分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">TC部分</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10107.html" title="灌篮高手2022">灌篮高手2022</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：仲村宗悟,笠间淳,木村昴,神尾晋一郎,三宅健太,岩崎谅太,坂本真绫,小林亲弘,松田健一郎,濑户麻沙美,宝龟克寿</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10136.html" title="鸡兔英雄与暗黑仓鼠" data-original="http://sakura.xonlines.com/upload/vod/20221228-1/b810da44b374cbfeec3c4590cd58f07c.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">9.0分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10136.html" title="鸡兔英雄与暗黑仓鼠">鸡兔英雄与暗黑仓鼠</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：Danny Fehsenfeld,Michael Ornstein,迪诺·安德拉德,乔·奥克曼,莱拉·贝尔津什,凯尔·赫伯特,Jordan Tartakow,James Fredrick,杰夫·道切特,乔伊·卡门,Cedric L. Williams,Donte Paris,迈克尔·索里奇,Brad Venable,Christopher McCullough</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/1460.html" title="少年毛泽东" data-original="http://sakura.xonlines.com/FileUpload/5492.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">4.3分</span><span class="tag" style="background-color: #ff9900;">2015</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/1460.html" title="少年毛泽东">少年毛泽东</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/8953.html" title="小马宝莉大电影" data-original="http://sakura.xonlines.com/upload/vod/20220511-1/082929299fbcacedf8d40099850905af.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">5.0分</span><span class="tag" style="background-color: #ff9900;">2017</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/8953.html" title="小马宝莉大电影">小马宝莉大电影</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：奥卓·阿杜巴,艾米莉·布朗特,阿什莉·鲍尔,克里斯汀·肯诺恩斯</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/8820.html" title="哆啦A梦：伴我同行2" data-original="http://sakura.xonlines.com/upload/vod/20220428-1/7e1423155ee2916be58bc46eb844ae87.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">5.0分</span><span class="tag" style="background-color: #ff9900;">2020</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/8820.html" title="哆啦A梦：伴我同行2">哆啦A梦：伴我同行2</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：水田山葵,大原惠美</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10130.html" title="男孩、鼹鼠、狐狸和马" data-original="http://sakura.xonlines.com/upload/vod/20221226-1/1cf76bb1a0960d98655226f1b12f0f34.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">10.0分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10130.html" title="男孩、鼹鼠、狐狸和马">男孩、鼹鼠、狐狸和马</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：汤姆·霍兰德尔,伊德里斯·艾尔巴,加布里埃尔·伯恩,裘德·科沃德·尼科尔</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/8982.html" title="名侦探柯南：贝克街的亡灵" data-original="http://sakura.xonlines.com/upload/vod/20220512-1/c4ba4907aefbda521caf1bab5410ec78.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">5.0分</span><span class="tag" style="background-color: #ff9900;">2002</span>		</span>
+		<span class="pic-text text-right">HD</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/8982.html" title="名侦探柯南：贝克街的亡灵">名侦探柯南：贝克街的亡灵</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：高山南,山崎和佳奈,神谷明,山口胜平</p>	</div>										
+</div>								
+					</li>
+					 
+				</ul>															
+			</div>
+						<div class="col-lg-wide-25 col-md-wide-25 hidden-sm hidden-xs">
+				<div class="myui-panel_hd">
+					<div class="myui-panel__head clearfix">				
+						<h3 class="title">
+							最热动漫电影						</h3>
+					
+					</div>
+				</div>
+				<ul class="myui-vodlist__text active clearfix" style="padding: 0 10px;">
+										<li>
+	<a href="/view/9866.html" title="航海王：红">
+		<span class="pull-right  text-muted" style="color: ;">TS</span>		<span class="badge badge-first">1</span>航海王：红	</a>
+</li>
+										<li>
+	<a href="/view/9937.html" title="咒术回战0剧场版">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge badge-second">2</span>咒术回战0剧场版	</a>
+</li>
+										<li>
+	<a href="/view/9457.html" title="刀剑神域进击篇：无星之夜的咏叹调">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge badge-third">3</span>刀剑神域进击篇：	</a>
+</li>
+										<li>
+	<a href="/view/9907.html" title="新神榜：杨戬">
+		<span class="pull-right  text-muted" style="color: ;">HD修正</span>		<span class="badge">4</span>新神榜：杨戬	</a>
+</li>
+										<li>
+	<a href="/view/8574.html" title="熊出没·重返地球">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge">5</span>熊出没·重返地球	</a>
+</li>
+										<li>
+	<a href="/view/9947.html" title="航海王：红发歌姬">
+		<span class="pull-right  text-muted" style="color: ;">TC</span>		<span class="badge">6</span>航海王：红发歌姬	</a>
+</li>
+										<li>
+	<a href="/view/8564.html" title="哥布林杀手：哥布林的王冠">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge">7</span>哥布林杀手：哥布	</a>
+</li>
+										<li>
+	<a href="/view/9987.html" title="名侦探柯南：万圣节的新娘">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge">8</span>名侦探柯南：万圣	</a>
+</li>
+										<li>
+	<a href="/view/1090.html" title="Fate/stay night Heavens Feel剧场版">
+		<span class="pull-right  text-muted" style="color: ;">更新至第三章</span>		<span class="badge">9</span>Fate/sta	</a>
+</li>
+										<li>
+	<a href="/view/8771.html" title="我让最想拥抱的男人给威胁了~西班牙篇">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge">10</span>我让最想拥抱的男	</a>
+</li>
+										<li>
+	<a href="/view/7206.html" title="Fate/stay night Heavens Feel剧场版">
+		<span class="pull-right  text-muted" style="color: ;">3</span>		<span class="badge">11</span>Fate/sta	</a>
+</li>
+										<li>
+	<a href="/view/9473.html" title="小黄人大眼萌：神偷奶爸前传">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge">12</span>小黄人大眼萌：神	</a>
+</li>
+										<li>
+	<a href="/view/8793.html" title="蜡笔小新：谜团！花之天下春日部学院">
+		<span class="pull-right  text-muted" style="color: ;">HD</span>		<span class="badge">13</span>蜡笔小新：谜团！	</a>
+</li>
+										<li>
+	<a href="/view/9322.html" title="我想吃掉你的胰脏">
+		<span class="pull-right  text-muted" style="color: ;">正片</span>		<span class="badge">14</span>我想吃掉你的胰脏	</a>
+</li>
+										<li>
+	<a href="/view/855.html" title="刀剑神域剧场版">
+		<span class="pull-right  text-muted" style="color: ;">HD1280高清</span>		<span class="badge">15</span>刀剑神域剧场版	</a>
+</li>
+									</ul>		
+			</div>
+					</div>						
+	</div>
+</div>
+<div class="myui-panel myui-panel-bg clearfix">
+	<div class="myui-panel-box clearfix">		
+		<div class="myui-panel_bd clearfix">
+			<div class="col-lg-wide-75 col-md-wide-75 col-xs-1 padding-0">		
+				<div class="myui-panel_hd">
+					<div class="myui-panel__head clearfix">				
+						<h3 class="title">
+							最新美国动漫						</h3>	
+					
+					</div>																			
+				</div>	
+				<ul class="myui-vodlist clearfix">
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10140.html" title="芝加哥派对阿姨第二季" data-original="http://sakura.xonlines.com/upload/vod/20221231-1/524fe295a458ec53caee60b47d47b97e.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">4.0分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">完结</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10140.html" title="芝加哥派对阿姨第二季">芝加哥派对阿姨第二季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10001.html" title="辛普森一家第三十四季" data-original="http://sakura.xonlines.com/upload/vod/20221015-1/d37b9b0107469a0943eaa90022333130.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">2.2分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">更新至11集</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10001.html" title="辛普森一家第三十四季">辛普森一家第三十四季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/126.html" title="超级监狱第一季" data-original="http://sakura.xonlines.com/FileUpload/4691.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">4.5分</span><span class="tag" style="background-color: #ff9900;">2008</span>		</span>
+		<span class="pic-text text-right">10集全</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/126.html" title="超级监狱第一季">超级监狱第一季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10125.html" title="地狱客栈" data-original="http://sakura.xonlines.com/upload/vod/20221221-1/1c1401a58788f3e8cd2cfe283d6fa616.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">8.0分</span><span class="tag" style="background-color: #ff9900;">2019</span>		</span>
+		<span class="pic-text text-right">正片</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10125.html" title="地狱客栈">地狱客栈</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：吉尔·哈里斯,埃尔希·洛夫洛克,迈克尔·科瓦赫,莫妮卡·佛朗哥,爱德华·博斯科,加布里埃尔·C·布朗,斯坦珀,克莉丝朵·拉波特,米歇尔·玛丽</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/2924.html" title="芭比之梦想豪宅" data-original="http://sakura.xonlines.com/FileUpload/3909.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">6.2分</span><span class="tag" style="background-color: #ff9900;">2012</span>		</span>
+		<span class="pic-text text-right">完结</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/2924.html" title="芭比之梦想豪宅">芭比之梦想豪宅</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/358.html" title="星蝶公主第二季" data-original="http://sakura.xonlines.com/FileUpload/2016716210057674.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">6.5分</span><span class="tag" style="background-color: #ff9900;">2016</span>		</span>
+		<span class="pic-text text-right">更新至22话，</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/358.html" title="星蝶公主第二季">星蝶公主第二季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/9011.html" title="爱，死亡和机器人第三季" data-original="http://sakura.xonlines.com/upload/vod/20220519-1/c8e55b6ddbbf22c4410f376b4c4111d8.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">9.8分</span><span class="tag" style="background-color: #ff9900;">2022</span>		</span>
+		<span class="pic-text text-right">完结</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/9011.html" title="爱，死亡和机器人第三季">爱，死亡和机器人第三季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/8462.html" title="爱，死亡和机器人第二季" data-original="http://sakura.xonlines.com/FileUpload/202204071800327881.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">7.7分</span><span class="tag" style="background-color: #ff9900;">2021</span>		</span>
+		<span class="pic-text text-right">完结</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/8462.html" title="爱，死亡和机器人第二季">爱，死亡和机器人第二季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：诺兰·诺斯,艾米丽·奥布莱恩</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/8460.html" title="爱，死亡和机器人第一季" data-original="http://sakura.xonlines.com/FileUpload/202204071755169831.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">7.6分</span><span class="tag" style="background-color: #ff9900;">2019</span>		</span>
+		<span class="pic-text text-right">18集全</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/8460.html" title="爱，死亡和机器人第一季">爱，死亡和机器人第一季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：斯科特·怀特,诺兰·诺斯,马修·杨·金</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10119.html" title="星球大战：克隆人战争第二季" data-original="http://sakura.xonlines.com/upload/vod/20221218-1/1c58d957e6ae07ce2608cbf710b33a57.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">4.0分</span><span class="tag" style="background-color: #ff9900;">2009</span>		</span>
+		<span class="pic-text text-right">完结</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10119.html" title="星球大战：克隆人战争第二季">星球大战：克隆人战争第二季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：马特·兰特尔,艾什莉·埃克斯坦,詹姆斯·阿诺德·泰勒,汤姆·凯恩,迪·布拉雷·贝克尔,马修·伍德,安东尼·丹尼尔斯,凯萨琳·塔柏,伊安·艾伯克龙比,特伦斯·卡森,科里·伯顿,吉姆·卡明斯</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/10118.html" title="星球大战：克隆人战争第一季" data-original="http://sakura.xonlines.com/upload/vod/20221218-1/592a91ee64c3c217407221e0166f339c.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">5.0分</span><span class="tag" style="background-color: #ff9900;">2008</span>		</span>
+		<span class="pic-text text-right">完结</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/10118.html" title="星球大战：克隆人战争第一季">星球大战：克隆人战争第一季</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：Tom Kane,Dee Bradley Baker,Matt Lanter,James Arnold Taylor</p>	</div>										
+</div>								
+					</li>
+										<li class="col-lg-6 col-md-6 col-sm-4 col-xs-3 hidden-sm">
+						<div class="myui-vodlist__box">
+	<a class="myui-vodlist__thumb lazyload" href="/view/117.html" title="成龙历险记" data-original="http://sakura.xonlines.com/FileUpload/2366.jpg">
+		<span class="play hidden-xs"></span>
+		<span class="pic-tag pic-tag-top">
+			<span class="tag" style="background-color: #7091fc;">7.7分</span><span class="tag" style="background-color: #ff9900;">2000</span>		</span>
+		<span class="pic-text text-right">95集全</span>	</a>									
+	<div class="myui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/view/117.html" title="成龙历险记">成龙历险记</a></h4>
+		<p class="text text-overflow text-muted hidden-xs">主演：内详</p>	</div>										
+</div>								
+					</li>
+					 
+				</ul>															
+			</div>
+						<div class="col-lg-wide-25 col-md-wide-25 hidden-sm hidden-xs">
+				<div class="myui-panel_hd">
+					<div class="myui-panel__head clearfix">				
+						<h3 class="title">
+							最热美国动漫						</h3>
+						<a class="more text-muted" href="
+						/top/hotan.html						">更多  <i class="fa fa-angle-right"></i></a>
+					</div>
+				</div>
+				<ul class="myui-vodlist__text active clearfix" style="padding: 0 10px;">
+										<li>
+	<a href="/view/9928.html" title="赛博朋克：边缘跑手">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge badge-first">1</span>赛博朋克：边缘跑	</a>
+</li>
+										<li>
+	<a href="/view/9917.html" title="瑞克和莫蒂第六季">
+		<span class="pull-right  text-muted" style="color: ;">更新至10集</span>		<span class="badge badge-second">2</span>瑞克和莫蒂第六季	</a>
+</li>
+										<li>
+	<a href="/view/8460.html" title="爱，死亡和机器人第一季">
+		<span class="pull-right  text-muted" style="color: ;">18集全</span>		<span class="badge badge-third">3</span>爱，死亡和机器人	</a>
+</li>
+										<li>
+	<a href="/view/9011.html" title="爱，死亡和机器人第三季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">4</span>爱，死亡和机器人	</a>
+</li>
+										<li>
+	<a href="/view/6963.html" title="瑞克和莫蒂第三季（含4-5季）">
+		<span class="pull-right  text-muted" style="color: ;">更新至10话，</span>		<span class="badge">5</span>瑞克和莫蒂第三季	</a>
+</li>
+										<li>
+	<a href="/view/2305.html" title="瑞克和莫蒂">
+		<span class="pull-right  text-muted" style="color: ;">11集全</span>		<span class="badge">6</span>瑞克和莫蒂	</a>
+</li>
+										<li>
+	<a href="/view/117.html" title="成龙历险记">
+		<span class="pull-right  text-muted" style="color: ;">95集全</span>		<span class="badge">7</span>成龙历险记	</a>
+</li>
+										<li>
+	<a href="/view/4405.html" title="辛普森一家第一季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">8</span>辛普森一家第一季	</a>
+</li>
+										<li>
+	<a href="/view/9293.html" title="极恶老大">
+		<span class="pull-right  text-muted" style="color: ;">全7集</span>		<span class="badge">9</span>极恶老大	</a>
+</li>
+										<li>
+	<a href="/view/8462.html" title="爱，死亡和机器人第二季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">10</span>爱，死亡和机器人	</a>
+</li>
+										<li>
+	<a href="/view/857.html" title="辛普森一家第二十七季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">11</span>辛普森一家第二十	</a>
+</li>
+										<li>
+	<a href="/view/8522.html" title="恶搞之家第二十季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">12</span>恶搞之家第二十季	</a>
+</li>
+										<li>
+	<a href="/view/1050.html" title="瑞克和莫蒂第二季">
+		<span class="pull-right  text-muted" style="color: ;">10集全</span>		<span class="badge">13</span>瑞克和莫蒂第二季	</a>
+</li>
+										<li>
+	<a href="/view/1524.html" title="辛普森一家第二十二季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">14</span>辛普森一家第二十	</a>
+</li>
+										<li>
+	<a href="/view/1526.html" title="辛普森一家第二十六季">
+		<span class="pull-right  text-muted" style="color: ;">完结</span>		<span class="badge">15</span>辛普森一家第二十	</a>
+</li>
+									</ul>		
+			</div>
+					</div>						
+	</div>
+</div>
+
+	        	<div class="myui-panel myui-panel-bg  clearfix">
+	<div class="myui-panel-box clearfix">
+		<div class="myui-panel_hd">
+			<div class="myui-panel__head clearfix">                                                                                                                                                                                                                                                       
+				<h3 class="title">
+					友情链接
+				</h3>								
+			</div>																		
+		</div>
+		<div class="myui-panel_bd clearfix">
+			<div class="col-xs-1">
+								<ul class="myui-link__text clearfix">
+									</ul>
+							</div>																		
+		</div>
+	</div>
+</div>
+<!-- 友链 -->
+	        	
+	        </div>
+	    </div>
+	    
+		<div class="myui-foot clearfix">
+	<div class="container min">
+		<div class="row">
+			<div class="col-pd text-center">
+				<p>本站所有视频和图片均来自互联网收集而来，版权归原创者所有，本网站只提供web页面服务，并不提供资源存储，也不参与录制、上传<br>若本站收录的节目无意侵犯了贵司版权，请发邮件至zy_cn_7@yeah.net （我们会在3个工作日内删除侵权内容，谢谢。）</p>	
+	
+				<p class="margin-0">
+									</p>	
+
+
+
+
+<script type="text/javascript">
+	MyTheme.Images.Qrcode.Init();MyTheme.Other.Skin();</script>
+
+<script type="text/javascript">
+	if(".bdshare".length){
+		window._bd_share_config = {
+			common: {
+				bdText: '',
+				bdDesc: '',
+				bdUrl: '',
+				bdPic: ''
+			},
+			share: [{
+				"bdSize": 24,
+				bdCustomStyle: myui.tpl+'statics/css/mytheme-share.css'
+			}]
+		}
+		with(document)0[(getElementsByTagName("head")[0]||body).appendChild(createElement('script')).src=''+myui.bdapi+'?cdnversion='+~(-new Date()/36e5)];
+	}
+</script>
+<!-- 尾部 -->
+	
+	</body>
+</html>
