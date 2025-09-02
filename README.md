@@ -5,7 +5,7 @@
 
 <!-- 打字机 -->
 <div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%20to%20my%20profile%22);I'm+a+full-stack+developer;I+love+☕+and+🐱" alt="Typing" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%20to%20my%20profile%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
 </div>
 
 <!-- 3D 旋转小电视（Spline 导出） -->
@@ -15,11 +15,11 @@
 
 <!-- GitHub 数据三连 -->
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=YOUR_USER_NAME&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&disable_animations=false&theme=radical&locale=en&hide_border=false" height="160" alt="stats" />
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR_USER_NAME&theme=radical&hide_border=false&border_radius=4" height="160" alt="streak" />
+  <img src="https://github-readme-stats.vercel.app/api?username=zhongyou7&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&disable_animations=false&theme=radical&locale=en&hide_border=false" height="160" alt="stats" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=zhongyou7&theme=radical&hide_border=false&border_radius=4" height="160" alt="streak" />
 </p>
 
 <!-- 访客计数器 -->
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=YOUR_USER_NAME&label=Visitors&color=ff69b4" alt="访客" />
+  <img src="https://komarev.com/ghpvc/?username=zhongyou7&label=Visitors&color=ff69b4" alt="访客" />
 </p>
