@@ -6,7 +6,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%20to%20my%20profile%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 村北村南，谷雨才耕遍。秀麦连冈桑叶贱。
+> 🌸 命随年欲尽，身与世俱忘；
 
 <!-- 3D 旋转小电视（Spline 导出） -->
 <p align="center">
