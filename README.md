@@ -6,7 +6,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%20to%20my%20profile%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 舒卷江山图画，应答龙鱼悲啸，不暇顾诗愁。
+> 🌸 扣舷独啸，不知今夕何夕。
 
 <!-- 3D 旋转小电视（Spline 导出） -->
 <p align="center">
