@@ -8,10 +8,6 @@
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%20to%20my%20profile%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
 > 🌸 日啖荔枝三百颗，不辞长作岭南人。
 
-<!-- 3D 旋转小电视（Spline 导出） -->
-<p align="center">
-  <img src="https://my.spline.design/untitled-4e726d9e5cb7c2d4e7d3b7c7f5e1b9f6/" width="320" />
-</p>
 
 <!-- GitHub 数据三连 -->
 <p align="center">
