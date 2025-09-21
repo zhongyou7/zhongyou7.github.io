@@ -13,7 +13,7 @@ jobs:
           curl -s https://v1.jinrishici.com/all.txt | iconv -f utf-8 -t utf-8//ignore > poem.txt
       - name: Patch README
         run: |
-          sed -i "9s/.*/> 🌸 $(cat poem.txt)/" README.md
+          sed -i "13s/.*/> 🌸 $(cat poem.txt)/" README.md
       - uses: EndBug/add-and-commit@v9
         with:
           message: "chore: update daily poem"
