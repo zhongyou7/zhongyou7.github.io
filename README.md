@@ -9,7 +9,7 @@
 </h2>
 <!-- 打字机 -->
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%20to%20my%20profile%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
 > 🌸 日啖荔枝三百颗，不辞长作岭南人。
 
 
