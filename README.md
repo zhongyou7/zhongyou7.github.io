@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 一生傲岸苦不谐，恩疏媒劳志多乖。
+> 🌸 胸中有誓深于海，肯使神州竟陆沉？
 
 
 <!-- GitHub 数据三连 -->
