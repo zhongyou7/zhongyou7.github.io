@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 日照香炉生紫烟，遥看瀑布挂前川。
+> 🌸 寂历秋江渔火稀，起看残月映林微。
 
 
 <!-- GitHub 数据三连 -->
