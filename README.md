@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 遥知未眠月，乡思在渔歌。
+> 🌸 世间珍果更无加，玉雪肌肤罩绛纱。
 
 
 <!-- GitHub 数据三连 -->
