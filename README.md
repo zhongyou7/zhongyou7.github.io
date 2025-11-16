@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 天阶夜色凉如水，卧看牵牛织女星。
+> 🌸 是天外空汗漫，但长风、浩浩送中秋。
 
 
 <!-- GitHub 数据三连 -->
