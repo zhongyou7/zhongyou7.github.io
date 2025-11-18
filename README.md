@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 黄河西来决昆仑，咆哮万里触龙门。
+> 🌸 霾两轮兮絷四马，援玉枹兮击鸣鼓。
 
 
 <!-- GitHub 数据三连 -->
