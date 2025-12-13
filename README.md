@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 池塘过雨急鸣蛙。酒醒明月照窗纱。
+> 🌸 教人无处寄相思，落花芳草过前期，没人知。
 
 
 <!-- GitHub 数据三连 -->
