@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 鸡声茅店月，人迹板桥霜。
+> 🌸 愿天上人间，占得欢娱，年年今夜。
 
 
 <!-- GitHub 数据三连 -->
