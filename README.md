@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 城雪初消荠菜生，角门深巷少人行。
+> 🌸 汉女输橦布，巴人讼芋田。
 
 
 <!-- GitHub 数据三连 -->
