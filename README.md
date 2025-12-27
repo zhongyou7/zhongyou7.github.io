@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 两岸荔枝红，万家烟雨中。
+> 🌸 龟灵未免刳肠患，马失应无折足忧。
 
 
 <!-- GitHub 数据三连 -->
