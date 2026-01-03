@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 黄雾涨天雪晦冥，黑云拂地风膻腥。
+> 🌸 晚风庭院落梅初。淡云来往月疏疏。
 
 
 <!-- GitHub 数据三连 -->
