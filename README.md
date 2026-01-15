@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 墉集欺猫鼠，林藏逐雀鹯。
+> 🌸 落日无人松径里，鬼火高低明灭。
 
 
 <!-- GitHub 数据三连 -->
