@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 谁道人生无再少？门前流水尚能西！休将白发唱黄鸡。
+> 🌸 行多有病住无粮，万里还乡未到乡。
 
 
 <!-- GitHub 数据三连 -->
