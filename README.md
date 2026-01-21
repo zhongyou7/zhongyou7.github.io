@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 孤帆远影碧空尽，唯见长江天际流。
+> 🌸 年年郡县送征人，将与辽东作丘坂。
 
 
 <!-- GitHub 数据三连 -->
