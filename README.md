@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 春思乱，芳心碎。
+> 🌸 一日不思量，也攒眉千度。
 
 
 <!-- GitHub 数据三连 -->
