@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
-> 🌸 兰有秀兮菊有芳，怀佳人兮不能忘。
+> 🌸 沧海月明珠有泪，蓝田日暖玉生烟。
 
 
 <!-- GitHub 数据三连 -->
