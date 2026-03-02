@@ -8,9 +8,10 @@
     <!-- Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
     
-    <!-- CodeMirror 6 -->
-    <script src="https://cdn.jsdelivr.net/npm/@codemirror/lang-python@6.1.3/dist/index.js" type="module"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@codemirror/view@6.22.0/dist/view.min.css">
+    <!-- 可选：Prism.js 语法高亮（轻量，无模块依赖） -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,50 +64,36 @@
             height: 100%;
             border-right: 2px solid #ddd;
             position: relative;
+            display: flex;
+        }
+        
+        .line-numbers {
+            width: 50px;
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 10px 5px;
+            text-align: right;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #adb5bd;
+            user-select: none;
+            overflow: hidden;
+            white-space: pre;
         }
         
         #editor {
-            width: 100%;
+            flex: 1;
             height: 100%;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
             padding: 10px;
             border: none;
             outline: none;
             resize: none;
             tab-size: 4;
-        }
-        
-        .line-numbers {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            background: #f8f9fa;
-            border-right: 1px solid #dee2e6;
-            padding: 10px 5px;
-            text-align: right;
-            font-family: monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #adb5bd;
-            user-select: none;
-            overflow: hidden;
-        }
-        
-        .editor-wrapper {
-            position: absolute;
-            left: 40px;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-        
-        #editor {
-            width: 100%;
-            height: 100%;
+            background: #fafafa;
         }
         
         #visualization {
@@ -115,14 +102,6 @@
             background: white;
             overflow: auto;
             padding: 20px;
-        }
-        
-        .current-line {
-            background: rgba(255, 235, 59, 0.4);
-        }
-        
-        .error-line {
-            background: rgba(231, 76, 60, 0.3);
         }
         
         #status {
@@ -137,21 +116,105 @@
             z-index: 1000;
         }
         
+        .step-info {
+            background: #ecf0f1;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .var-container {
+            display: grid;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
         .var-box {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
             border-radius: 4px;
-            padding: 8px;
-            margin: 4px 0;
-            font-family: 'Consolas', 'Monaco', monospace;
+            padding: 10px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
         }
         
-        .var-name { color: #e74c3c; font-weight: bold; }
-        .var-type { color: #7f8c8d; font-size: 12px; margin-left: 8px; }
-        .var-value { color: #27ae60; margin-left: 8px; }
+        .var-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
         
-        /* 简单语法高亮 */
-        .cm-editor { height: 100%; }
+        .var-name { 
+            color: #e74c3c; 
+            font-weight: bold; 
+            font-size: 14px;
+        }
+        
+        .var-type { 
+            background: #95a5a6; 
+            color: white; 
+            padding: 2px 8px; 
+            border-radius: 3px; 
+            font-size: 11px;
+        }
+        
+        .var-value { 
+            color: #27ae60; 
+            font-family: monospace;
+        }
+        
+        .var-items {
+            margin-top: 8px;
+            padding-left: 20px;
+            border-left: 2px solid #dee2e6;
+        }
+        
+        .var-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 2px 0;
+            font-size: 12px;
+        }
+        
+        .item-index {
+            color: #7f8c8d;
+            min-width: 30px;
+        }
+        
+        .empty-vars {
+            color: #95a5a6;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin: 20px 0 10px;
+            font-size: 16px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        
+        .error-box {
+            background: #fee;
+            border: 1px solid #e74c3c;
+            border-radius: 5px;
+            padding: 20px;
+            color: #c0392b;
+        }
+        
+        .error-box pre {
+            background: #fff;
+            padding: 10px;
+            border-radius: 3px;
+            overflow: auto;
+            margin-top: 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -166,19 +229,17 @@
     <div id="main">
         <div id="editor-container">
             <div class="line-numbers" id="line-numbers">1</div>
-            <div class="editor-wrapper">
-                <textarea id="editor" spellcheck="false"># 在这里编写 Python 代码
-x = [1, 2, 3]
-y = {"name": "Alice", "age": 25}
+            <textarea id="editor" spellcheck="false"># 测试代码 - 简单变量和函数
+x = 42
+name = "Alice"
+items = [1, 2, 3, 4, 5]
 
-def factorial(n):
-    if n <= 1:
-        return 1
-    return n * factorial(n - 1)
+def add(a, b):
+    result = a + b
+    return result
 
-result = factorial(3)
-print(result)</textarea>
-            </div>
+final = add(10, 20)
+print(final)</textarea>
         </div>
         <div id="visualization">
             <div style="color: #999; text-align: center; margin-top: 50%;">
@@ -198,11 +259,13 @@ print(result)</textarea>
 
         const editor = document.getElementById('editor');
         const lineNumbers = document.getElementById('line-numbers');
+        const visualization = document.getElementById('visualization');
 
         // 同步行号
         function updateLineNumbers() {
             const lines = editor.value.split('\n').length;
-            lineNumbers.innerHTML = Array(lines).fill(0).map((_, i) => i + 1).join('<br>');
+            const numbers = Array(lines).fill(0).map((_, i) => i + 1).join('\n');
+            lineNumbers.textContent = numbers;
         }
 
         editor.addEventListener('input', updateLineNumbers);
@@ -238,33 +301,50 @@ print(result)</textarea>
             showStatus('正在加载 Python 运行时...', 0);
             pyodide = await loadPyodide();
             
-            // 注入追踪代码
+            // 注入追踪代码 - 修复版本
             const tracerCode = `
 import sys
 import json
 import builtins
-import linecache
 
 class ExecutionTracer:
     def __init__(self):
         self.steps = []
         self.current_step = 0
-        self.max_steps = 1000
+        self.max_steps = 500
         
     def trace_calls(self, frame, event, arg):
-        if self.current_step > self.max_steps:
+        if self.current_step >= self.max_steps:
             return None
             
         if event == 'line':
+            # 获取当前行的局部变量
+            local_vars = {}
+            for name, value in frame.f_locals.items():
+                if not name.startswith('__'):
+                    try:
+                        local_vars[name] = self.serialize_value(value)
+                    except:
+                        local_vars[name] = {"type": "error", "repr": "无法序列化"}
+            
+            # 获取全局变量（排除内置）
+            global_vars = {}
+            for name, value in frame.f_globals.items():
+                if not name.startswith('__') and name not in ['sys', 'json', 'builtins', 'ExecutionTracer', 'tracer']:
+                    try:
+                        global_vars[name] = self.serialize_value(value)
+                    except:
+                        global_vars[name] = {"type": "error", "repr": "无法序列化"}
+            
             step_info = {
-                'step': self.current_step,
-                'line': frame.f_lineno,
-                'function': frame.f_code.co_name,
-                'locals': self.safe_serialize(frame.f_locals),
-                'globals': self.safe_serialize({k: v for k, v in frame.f_globals.items() 
-                                               if not k.startswith('__') and k not in ['sys', 'json', 'builtins', 'ExecutionTracer', 'linecache', 'tracer']}),
-                'stack_depth': self.get_stack_depth(frame)
+                "step": self.current_step,
+                "line": frame.f_lineno,
+                "function": str(frame.f_code.co_name),
+                "locals": local_vars,
+                "globals": global_vars,
+                "stack_depth": self.get_stack_depth(frame)
             }
+            
             self.steps.append(step_info)
             self.current_step += 1
             
@@ -278,63 +358,122 @@ class ExecutionTracer:
             current = current.f_back
         return depth
     
-    def safe_serialize(self, obj, depth=0, seen=None):
+    def serialize_value(self, obj, depth=0, seen=None):
+        """递归序列化 Python 对象为字典"""
         if seen is None:
             seen = set()
-        if depth > 3:
-            return {"type": "ellipsis", "repr": "..."}
         
-        try:
-            obj_id = id(obj)
-            if obj_id in seen:
-                return {"type": "circular", "repr": "<circular ref>"}
-            seen.add(obj_id)
+        # 防止循环引用
+        obj_id = id(obj)
+        if obj_id in seen:
+            return {"type": "circular", "repr": "<循环引用>"}
+        
+        if depth > 5:
+            return {"type": "deep", "repr": "<深层对象>"}
+        
+        seen = seen | {obj_id}
+        
+        # None
+        if obj is None:
+            return {"type": "NoneType", "repr": "None"}
+        
+        # 布尔值（必须在 int 之前检查，因为 bool 是 int 的子类）
+        if isinstance(obj, bool):
+            return {"type": "bool", "repr": str(obj), "value": obj}
+        
+        # 整数
+        if isinstance(obj, int):
+            return {"type": "int", "repr": str(obj), "value": obj}
+        
+        # 浮点数
+        if isinstance(obj, float):
+            return {"type": "float", "repr": str(obj), "value": obj}
+        
+        # 字符串
+        if isinstance(obj, str):
+            if len(obj) > 50:
+                return {"type": "str", "repr": repr(obj[:50] + "..."), "length": len(obj)}
+            return {"type": "str", "repr": repr(obj), "length": len(obj)}
+        
+        # 列表和元组
+        if isinstance(obj, (list, tuple)):
+            items = []
+            for i, item in enumerate(obj[:10]):  # 最多显示10个
+                items.append(self.serialize_value(item, depth + 1, seen))
             
-            if obj is None:
-                return {"type": "None", "repr": "None"}
-            elif isinstance(obj, bool):
-                return {"type": "bool", "repr": str(obj), "value": obj}
-            elif isinstance(obj, int):
-                return {"type": "int", "repr": str(obj), "value": obj}
-            elif isinstance(obj, float):
-                return {"type": "float", "repr": str(obj), "value": obj}
-            elif isinstance(obj, str):
-                display = repr(obj[:50] + ('...' if len(obj) > 50 else ''))
-                return {"type": "str", "repr": display}
-            elif isinstance(obj, (list, tuple)):
-                items = [self.safe_serialize(item, depth+1, seen.copy()) 
-                        for item in obj[:20]]
-                return {
-                    "type": "list",
-                    "repr": f"[{len(obj)} items]" if len(obj) > 20 else repr(obj),
-                    "items": items,
-                    "length": len(obj)
-                }
-            elif isinstance(obj, dict):
-                items = {}
-                for k, v in list(obj.items())[:20]:
-                    key_str = str(k)[:20]
-                    items[key_str] = self.safe_serialize(v, depth+1, seen.copy())
-                return {
-                    "type": "dict",
-                    "repr": f"{{{len(obj)} items}}" if len(obj) > 20 else repr(obj),
-                    "items": items,
-                    "length": len(obj)
-                }
-            elif hasattr(obj, '__class__'):
-                class_name = obj.__class__.__name__
-                repr_str = repr(obj)[:50]
-                return {
-                    "type": "object",
-                    "class": class_name,
-                    "repr": repr_str
-                }
-            else:
-                return {"type": "unknown", "repr": str(obj)[:50]}
-        except Exception as e:
-            return {"type": "error", "repr": f"<error: {str(e)}>"}
-        finally:
-            seen.discard(obj_id)
+            return {
+                "type": "list" if isinstance(obj, list) else "tuple",
+                "repr": f"{type(obj).__name__}({len(obj)} items)",
+                "length": len(obj),
+                "items": items
+            }
+        
+        # 字典
+        if isinstance(obj, dict):
+            items = {}
+            for i, (k, v) in enumerate(obj.items()):
+                if i >= 10:  # 最多显示10个键值对
+                    break
+                key_str = str(k)[:20]
+                items[key_str] = self.serialize_value(v, depth + 1, seen)
+            
+            return {
+                "type": "dict",
+                "repr": f"dict({len(obj)} items)",
+                "length": len(obj),
+                "items": items
+            }
+        
+        # 集合
+        if isinstance(obj, set):
+            items = []
+            for i, item in enumerate(obj):
+                if i >= 10:
+                    break
+                items.append(self.serialize_value(item, depth + 1, seen))
+            
+            return {
+                "type": "set",
+                "repr": f"set({len(obj)} items)",
+                "length": len(obj),
+                "items": items
+            }
+        
+        # 函数
+        if callable(obj):
+            return {
+                "type": "function",
+                "repr": f"<function {getattr(obj, '__name__', 'unknown')}>",
+                "name": getattr(obj, '__name__', 'unknown')
+            }
+        
+        # 模块
+        if isinstance(obj, type(sys)):
+            return {"type": "module", "repr": f"<module {getattr(obj, '__name__', 'unknown')}>"}
+        
+        # 其他对象
+        class_name = getattr(obj.__class__, '__name__', type(obj).__name__)
+        module_name = getattr(obj.__class__, '__module__', 'unknown')
+        
+        # 尝试获取对象的 __dict__
+        attrs = {}
+        if hasattr(obj, '__dict__') and obj.__dict__:
+            for i, (k, v) in enumerate(obj.__dict__.items()):
+                if i >= 5:  # 最多显示5个属性
+                    break
+                if not k.startswith('_'):
+                    try:
+                        attrs[k] = self.serialize_value(v, depth + 1, seen)
+                    except:
+                        pass
+        
+        return {
+            "type": "object",
+            "class": class_name,
+            "module": module_name,
+            "repr": f"<{class_name} object>",
+            "attrs": attrs
+        }
 
 tracer = ExecutionTracer()
 `;
@@ -345,20 +484,22 @@ tracer = ExecutionTracer()
         }
 
         // 高亮行
-        function highlightLine(lineNum, type = 'current') {
-            // 移除旧的高亮
-            editor.style.background = 'white';
-            
-            // 简单的行高亮：通过创建 overlay 实现
+        function highlightLine(lineNum) {
             const lines = editor.value.split('\n');
             if (lineNum < 1 || lineNum > lines.length) return;
             
-            // 滚动到指定行
-            const lineHeight = 21; // 近似行高
-            editor.scrollTop = (lineNum - 1) * lineHeight - editor.clientHeight / 2;
+            // 滚动到指定行（每行约 22.4px）
+            const lineHeight = 22.4;
+            editor.scrollTop = (lineNum - 1) * lineHeight - editor.clientHeight / 2 + 100;
             
-            // 视觉提示（通过状态栏）
-            showStatus(`第 ${lineNum} 行`, 1000);
+            // 高亮行号
+            const lineNumbers = document.querySelector('.line-numbers');
+            const numbers = lineNumbers.textContent.split('\n');
+            numbers[lineNum - 1] = '▶ ' + numbers[lineNum - 1];
+            lineNumbers.textContent = numbers.join('\n');
+            
+            // 2秒后恢复
+            setTimeout(updateLineNumbers, 2000);
         }
 
         // 运行代码
@@ -377,25 +518,28 @@ tracer.steps = []
 tracer.current_step = 0
                 `);
                 
-                // 设置追踪并执行
+                // 设置追踪
                 await pyodide.runPythonAsync(`
 sys.settrace(tracer.trace_calls)
                 `);
                 
+                // 执行代码
                 await pyodide.runPythonAsync(code);
                 
+                // 关闭追踪
                 await pyodide.runPythonAsync(`
 sys.settrace(None)
                 `);
                 
                 // 获取结果
                 const stepsJson = await pyodide.runPythonAsync(`json.dumps(tracer.steps)`);
+                console.log("原始 JSON:", stepsJson.substring(0, 500));
+                
                 executionSteps = JSON.parse(stepsJson);
                 
                 if (executionSteps.length === 0) {
                     showStatus('代码执行完成，但没有捕获到步骤');
-                    document.getElementById('visualization').innerHTML = 
-                        '<div style="color: #e74c3c; text-align: center; margin-top: 50%;">没有捕获到执行步骤</div>';
+                    visualization.innerHTML = '<div class="empty-vars">没有捕获到执行步骤（代码可能没有执行任何语句）</div>';
                 } else {
                     showStatus(`捕获了 ${executionSteps.length} 个执行步骤`);
                     enableStepMode();
@@ -407,15 +551,14 @@ sys.settrace(None)
                 
                 const lineMatch = error.message.match(/line (\\d+)/);
                 if (lineMatch) {
-                    const errorLine = parseInt(lineMatch[1]);
-                    highlightLine(errorLine, 'error');
+                    highlightLine(parseInt(lineMatch[1]));
                 }
                 
                 showStatus('执行错误: ' + error.message);
-                document.getElementById('visualization').innerHTML = 
-                    `<div style="color: #e74c3c; padding: 20px;">
-                        <h3>执行错误</h3>
-                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px; overflow: auto;">${error.message}</pre>
+                visualization.innerHTML = 
+                    `<div class="error-box">
+                        <strong>执行错误</strong>
+                        <pre>${error.message}</pre>
                     </div>`;
             } finally {
                 document.getElementById('btn-run').disabled = false;
@@ -434,40 +577,43 @@ sys.settrace(None)
             
             currentStep = index;
             const step = executionSteps[index];
-            const container = document.getElementById('visualization');
+            
+            console.log("当前步骤:", step);
             
             highlightLine(step.line);
             
             let html = `
-                <div style="margin-bottom: 20px; padding: 15px; background: #ecf0f1; border-radius: 5px; border-left: 4px solid #3498db;">
+                <div class="step-info">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <strong>步骤 ${index + 1} / ${executionSteps.length}</strong>
-                        <span style="color: #7f8c8d; font-size: 14px;">第 ${step.line} 行 · ${step.function}()</span>
+                        <span style="color: #7f8c8d; font-size: 14px;">
+                            第 ${step.line} 行 · 函数: ${step.function} · 堆栈深度: ${step.stack_depth}
+                        </span>
                     </div>
                 </div>
             `;
             
             // 局部变量
-            html += '<h3 style="color: #2c3e50; margin: 20px 0 10px; font-size: 16px;">局部变量</h3>';
+            html += '<h3>局部变量 (Locals)</h3>';
             html += renderVariables(step.locals);
             
             // 全局变量
             const globalKeys = Object.keys(step.globals);
-            if (globalKeys.length > 0 && globalKeys.length < 15) {
-                html += '<h3 style="color: #2c3e50; margin: 20px 0 10px; font-size: 16px;">全局变量</h3>';
+            if (globalKeys.length > 0) {
+                html += '<h3>全局变量 (Globals)</h3>';
                 html += renderVariables(step.globals);
             }
             
-            container.innerHTML = html;
+            visualization.innerHTML = html;
         }
 
         // 渲染变量
         function renderVariables(vars) {
-            if (Object.keys(vars).length === 0) {
-                return '<p style="color: #95a5a6; font-style: italic;">(无变量)</p>';
+            if (!vars || Object.keys(vars).length === 0) {
+                return '<div class="empty-vars">(无变量)</div>';
             }
             
-            let html = '<div style="display: grid; gap: 8px;">';
+            let html = '<div class="var-container">';
             
             for (const [name, info] of Object.entries(vars)) {
                 html += renderVariable(name, info);
@@ -479,51 +625,83 @@ sys.settrace(None)
 
         // 渲染单个变量
         function renderVariable(name, info, indent = 0) {
-            const colors = {
+            // 防御性检查
+            if (!info || typeof info !== 'object') {
+                return `<div class="var-box" style="margin-left: ${indent * 20}px">
+                    <span class="var-name">${escapeHtml(String(name))}</span>
+                    <span class="var-type">unknown</span>
+                    <span class="var-value">${escapeHtml(String(info))}</span>
+                </div>`;
+            }
+            
+            const typeColors = {
                 'int': '#e8f5e9',
                 'float': '#e8f5e9',
                 'str': '#fff3e0',
                 'bool': '#fffde7',
-                'None': '#fafafa',
+                'NoneType': '#fafafa',
                 'list': '#f3e5f5',
+                'tuple': '#f3e5f5',
                 'dict': '#e0f2f1',
+                'set': '#e0f2f1',
                 'object': '#eceff1',
-                'ellipsis': '#cfd8dc',
+                'function': '#d1ecf1',
                 'circular': '#ffcdd2',
+                'deep': '#cfd8dc',
                 'error': '#ffebee'
             };
             
-            const bg = colors[info.type] || '#f5f5f5';
+            const bg = typeColors[info.type] || '#f5f5f5';
             const marginLeft = indent * 20;
             
-            let html = `
-                <div class="var-box" style="background: ${bg}; margin-left: ${marginLeft}px;">
-                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
-                        <span class="var-name">${escapeHtml(name)}</span>
-                        <span class="var-type">${info.type}</span>
-                        <span class="var-value">${escapeHtml(info.repr)}</span>
-                    </div>
-            `;
+            let html = `<div class="var-box" style="background: ${bg}; margin-left: ${marginLeft}px">`;
+            
+            // 变量头部
+            html += '<div class="var-header">';
+            html += `<span class="var-name">${escapeHtml(String(name))}</span>`;
+            html += `<span class="var-type">${escapeHtml(String(info.type || 'unknown'))}</span>`;
+            html += `<span class="var-value">${escapeHtml(String(info.repr || info.value || 'N/A'))}</span>`;
+            html += '</div>';
             
             // 递归渲染容器内容
-            if (info.items && info.type === 'list') {
-                html += '<div style="margin-top: 8px; display: flex; gap: 4px; flex-wrap: wrap;">';
+            if (info.items && Array.isArray(info.items) && info.items.length > 0) {
+                html += '<div class="var-items">';
                 info.items.forEach((item, idx) => {
-                    html += `<div style="background: white; padding: 2px 6px; border-radius: 3px; font-size: 12px; border: 1px solid #ddd;">
-                        [${idx}] ${escapeHtml(item.repr)}
-                    </div>`;
+                    if (typeof item === 'object' && item !== null) {
+                        html += renderVariable(`[${idx}]`, item, indent + 1);
+                    } else {
+                        html += `<div class="var-item">
+                            <span class="item-index">[${idx}]</span>
+                            <span>${escapeHtml(String(item))}</span>
+                        </div>`;
+                    }
                 });
-                if (info.length > 20) {
-                    html += `<div style="color: #7f8c8d; font-size: 12px;">... 还有 ${info.length - 20} 项</div>`;
+                if (info.length > (info.items.length || 0)) {
+                    html += `<div style="color: #7f8c8d; font-size: 12px; margin-top: 5px;">
+                        ... 还有 ${info.length - info.items.length} 项
+                    </div>`;
                 }
                 html += '</div>';
-            } else if (info.items && info.type === 'dict') {
-                html += '<div style="margin-top: 8px;">';
+            } else if (info.items && typeof info.items === 'object' && Object.keys(info.items).length > 0) {
+                // 字典类型的 items
+                html += '<div class="var-items">';
                 for (const [key, val] of Object.entries(info.items)) {
                     html += renderVariable(key, val, indent + 1);
                 }
-                if (info.length > 20) {
-                    html += `<div style="color: #7f8c8d; font-size: 12px; margin-left: ${(indent+1)*20}px;">... 还有 ${info.length - 20} 项</div>`;
+                if (info.length > Object.keys(info.items).length) {
+                    html += `<div style="color: #7f8c8d; font-size: 12px; margin-top: 5px;">
+                        ... 还有 ${info.length - Object.keys(info.items).length} 项
+                    </div>`;
+                }
+                html += '</div>';
+            }
+            
+            // 对象属性
+            if (info.attrs && Object.keys(info.attrs).length > 0) {
+                html += '<div class="var-items">';
+                html += '<div style="color: #7f8c8d; font-size: 12px; margin-bottom: 5px;">属性:</div>';
+                for (const [key, val] of Object.entries(info.attrs)) {
+                    html += renderVariable(key, val, indent + 1);
                 }
                 html += '</div>';
             }
@@ -533,8 +711,9 @@ sys.settrace(None)
         }
 
         function escapeHtml(text) {
+            if (text === null || text === undefined) return 'N/A';
             const div = document.createElement('div');
-            div.textContent = text;
+            div.textContent = String(text);
             return div.innerHTML;
         }
 
@@ -556,8 +735,8 @@ sys.settrace(None)
         function reset() {
             currentStep = 0;
             executionSteps = [];
-            editor.style.background = 'white';
-            document.getElementById('visualization').innerHTML = `
+            updateLineNumbers();
+            visualization.innerHTML = `
                 <div style="color: #999; text-align: center; margin-top: 50%;">
                     点击"运行"开始可视化执行
                 </div>
@@ -576,7 +755,7 @@ sys.settrace(None)
                 await initPyodide();
             } catch (err) {
                 console.error("初始化失败:", err);
-                showStatus('初始化失败: ' + err.message);
+                showStatus('初始化失败: ' + err.message, 0);
             }
         }
 
