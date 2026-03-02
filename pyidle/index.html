@@ -226,7 +226,7 @@
 </head>
 <body>
     <div id="header">
-        <h1>🐍 PyIdle - Python 可视化执行器</h1>
+        <h1>Python 可视化执行器</h1>
         <button id="btn-run" onclick="runCode()">▶ 运行</button>
         <button id="btn-next" onclick="stepForward()" disabled>→ 下一步</button>
         <button id="btn-prev" onclick="stepBackward()" disabled>← 上一步</button>
@@ -652,10 +652,6 @@ sys.settrace(None)
                 </div>
             `;
             
-            // 局部变量
-            const localKeys = Object.keys(step.locals || {});
-            html += `<h3>局部变量 (${localKeys.length})</h3>`;
-            html += renderVariables(step.locals);
             
             // 全局变量
             const globalKeys = Object.keys(step.globals || {});
@@ -663,6 +659,11 @@ sys.settrace(None)
                 html += `<h3>全局变量 (${globalKeys.length})</h3>`;
                 html += renderVariables(step.globals);
             }
+            
+            // 局部变量
+            const localKeys = Object.keys(step.locals || {});
+            html += `<h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'; this.textContent=this.textContent.startsWith('▶')?'▼ 局部变量 ('+${localKeys.length}+')':'▶ 局部变量 ('+${localKeys.length}+')'">▼ 局部变量 (${localKeys.length})</h3><div>${renderVariables(step.locals)}</div>`;
+            html += renderVariables(step.locals);
             
             visualization.innerHTML = html;
         }
