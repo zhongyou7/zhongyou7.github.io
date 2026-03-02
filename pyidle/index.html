@@ -344,7 +344,11 @@ class ExecutionTracer:
             line_content = ""
             if 1 <= lineno <= len(self.code_lines):
                 line_content = self.code_lines[lineno - 1].strip()
-            
+
+            # 跳过空行和注释行
+            if not line_content or line_content.startswith('#'):
+                return self.trace_calls
+                
             # 获取局部变量
             local_vars = {}
             for name, value in frame.f_locals.items():
