@@ -1,0 +1,26 @@
+.currentLine {
+    background: rgba(255, 235, 59, 0.3) !important;
+}
+
+#visualization {
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.variable-box {
+    transition: all 0.3s ease;
+}
+
+.variable-box:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.step-transition {
+    animation: fadeIn 0.3s ease;
+}
