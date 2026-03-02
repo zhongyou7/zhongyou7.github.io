@@ -8,11 +8,6 @@
     <!-- Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
     
-    <!-- 可选：Prism.js 语法高亮（轻量，无模块依赖） -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -144,6 +139,7 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 5px;
+            flex-wrap: wrap;
         }
         
         .var-name { 
@@ -215,6 +211,17 @@
             margin-top: 10px;
             font-size: 12px;
         }
+        
+        .code-preview {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            color: #495057;
+        }
     </style>
 </head>
 <body>
@@ -256,6 +263,7 @@ print(final)</textarea>
         let executionSteps = [];
         let currentStep = 0;
         let isInitialized = false;
+        let userCodeLines = [];  // 存储用户代码行用于显示
 
         const editor = document.getElementById('editor');
         const lineNumbers = document.getElementById('line-numbers');
@@ -301,7 +309,7 @@ print(final)</textarea>
             showStatus('正在加载 Python 运行时...', 0);
             pyodide = await loadPyodide();
             
-            // 注入追踪代码 - 修复版本
+            // 注入追踪代码 - 关键修复：过滤掉 Pyodide 内部代码
             const tracerCode = `
 import sys
 import json
@@ -312,33 +320,59 @@ class ExecutionTracer:
         self.steps = []
         self.current_step = 0
         self.max_steps = 500
+        self.user_code = ""
+        
+    def set_user_code(self, code):
+        """存储用户代码用于行号映射"""
+        self.user_code = code
+        self.code_lines = code.split('\\n')
         
     def trace_calls(self, frame, event, arg):
         if self.current_step >= self.max_steps:
             return None
             
+        # 关键：只追踪用户代码（<exec> 是 pyodide.runPythonAsync 使用的文件名）
+        filename = frame.f_code.co_filename
+        if filename != '<exec>':
+            # 跳过所有非用户代码（Pyodide 内部、标准库等）
+            return self.trace_calls
+        
         if event == 'line':
-            # 获取当前行的局部变量
+            lineno = frame.f_lineno
+            
+            # 获取当前行的代码内容
+            line_content = ""
+            if 1 <= lineno <= len(self.code_lines):
+                line_content = self.code_lines[lineno - 1].strip()
+            
+            # 获取局部变量
             local_vars = {}
             for name, value in frame.f_locals.items():
-                if not name.startswith('__'):
+                if not name.startswith('__') and name != 'sys':
                     try:
                         local_vars[name] = self.serialize_value(value)
-                    except:
-                        local_vars[name] = {"type": "error", "repr": "无法序列化"}
+                    except Exception as e:
+                        local_vars[name] = {"type": "error", "repr": f"序列化错误: {str(e)}"}
             
-            # 获取全局变量（排除内置）
+            # 获取全局变量（只包含用户定义的）
             global_vars = {}
             for name, value in frame.f_globals.items():
-                if not name.startswith('__') and name not in ['sys', 'json', 'builtins', 'ExecutionTracer', 'tracer']:
+                # 过滤掉内置模块和 Pyodide 内部对象
+                if (not name.startswith('__') and 
+                    name not in ['sys', 'json', 'builtins', 'ExecutionTracer', 'tracer'] and
+                    not name in dir(builtins)):  # 排除内置函数如 print, len 等
                     try:
-                        global_vars[name] = self.serialize_value(value)
+                        serialized = self.serialize_value(value)
+                        # 进一步过滤：排除模块类型（通常是导入的库）
+                        if serialized.get('type') != 'module':
+                            global_vars[name] = serialized
                     except:
-                        global_vars[name] = {"type": "error", "repr": "无法序列化"}
+                        pass
             
             step_info = {
                 "step": self.current_step,
-                "line": frame.f_lineno,
+                "line": lineno,
+                "line_content": line_content,
                 "function": str(frame.f_code.co_name),
                 "locals": local_vars,
                 "globals": global_vars,
@@ -351,10 +385,12 @@ class ExecutionTracer:
         return self.trace_calls
     
     def get_stack_depth(self, frame):
+        """计算调用栈深度，但只计算用户代码层"""
         depth = 0
         current = frame
         while current:
-            depth += 1
+            if current.f_code.co_filename == '<exec>':
+                depth += 1
             current = current.f_back
         return depth
     
@@ -377,7 +413,7 @@ class ExecutionTracer:
         if obj is None:
             return {"type": "NoneType", "repr": "None"}
         
-        # 布尔值（必须在 int 之前检查，因为 bool 是 int 的子类）
+        # 布尔值（必须在 int 之前检查）
         if isinstance(obj, bool):
             return {"type": "bool", "repr": str(obj), "value": obj}
         
@@ -389,16 +425,24 @@ class ExecutionTracer:
         if isinstance(obj, float):
             return {"type": "float", "repr": str(obj), "value": obj}
         
+        # 复数
+        if isinstance(obj, complex):
+            return {"type": "complex", "repr": str(obj), "value": {"real": obj.real, "imag": obj.imag}}
+        
         # 字符串
         if isinstance(obj, str):
             if len(obj) > 50:
                 return {"type": "str", "repr": repr(obj[:50] + "..."), "length": len(obj)}
             return {"type": "str", "repr": repr(obj), "length": len(obj)}
         
+        # 字节
+        if isinstance(obj, bytes):
+            return {"type": "bytes", "repr": f"bytes({len(obj)})", "length": len(obj)}
+        
         # 列表和元组
         if isinstance(obj, (list, tuple)):
             items = []
-            for i, item in enumerate(obj[:10]):  # 最多显示10个
+            for i, item in enumerate(obj[:10]):
                 items.append(self.serialize_value(item, depth + 1, seen))
             
             return {
@@ -412,7 +456,7 @@ class ExecutionTracer:
         if isinstance(obj, dict):
             items = {}
             for i, (k, v) in enumerate(obj.items()):
-                if i >= 10:  # 最多显示10个键值对
+                if i >= 10:
                     break
                 key_str = str(k)[:20]
                 items[key_str] = self.serialize_value(v, depth + 1, seen)
@@ -441,25 +485,37 @@ class ExecutionTracer:
         
         # 函数
         if callable(obj):
+            func_name = getattr(obj, '__name__', 'unknown')
+            # 跳过追踪器自己的方法
+            if func_name in ['trace_calls', 'serialize_value', 'get_stack_depth', 'set_user_code']:
+                return {"type": "internal", "repr": "<internal>"}
             return {
                 "type": "function",
-                "repr": f"<function {getattr(obj, '__name__', 'unknown')}>",
-                "name": getattr(obj, '__name__', 'unknown')
+                "repr": f"<function {func_name}>",
+                "name": func_name
             }
         
         # 模块
         if isinstance(obj, type(sys)):
             return {"type": "module", "repr": f"<module {getattr(obj, '__name__', 'unknown')}>"}
         
+        # 类类型
+        if isinstance(obj, type):
+            return {
+                "type": "class",
+                "repr": f"<class '{obj.__name__}'>",
+                "name": obj.__name__
+            }
+        
         # 其他对象
         class_name = getattr(obj.__class__, '__name__', type(obj).__name__)
         module_name = getattr(obj.__class__, '__module__', 'unknown')
         
-        # 尝试获取对象的 __dict__
+        # 获取对象的属性
         attrs = {}
         if hasattr(obj, '__dict__') and obj.__dict__:
             for i, (k, v) in enumerate(obj.__dict__.items()):
-                if i >= 5:  # 最多显示5个属性
+                if i >= 5:
                     break
                 if not k.startswith('_'):
                     try:
@@ -488,17 +544,16 @@ tracer = ExecutionTracer()
             const lines = editor.value.split('\n');
             if (lineNum < 1 || lineNum > lines.length) return;
             
-            // 滚动到指定行（每行约 22.4px）
+            // 滚动到指定行
             const lineHeight = 22.4;
             editor.scrollTop = (lineNum - 1) * lineHeight - editor.clientHeight / 2 + 100;
             
             // 高亮行号
-            const lineNumbers = document.querySelector('.line-numbers');
             const numbers = lineNumbers.textContent.split('\n');
-            numbers[lineNum - 1] = '▶ ' + numbers[lineNum - 1];
+            const displayNum = numbers[lineNum - 1] || lineNum;
+            numbers[lineNum - 1] = '▶ ' + displayNum.replace('▶ ', '');
             lineNumbers.textContent = numbers.join('\n');
             
-            // 2秒后恢复
             setTimeout(updateLineNumbers, 2000);
         }
 
@@ -507,15 +562,17 @@ tracer = ExecutionTracer()
             const code = editor.value;
             executionSteps = [];
             currentStep = 0;
+            userCodeLines = code.split('\n');
             
             document.getElementById('btn-run').disabled = true;
             showStatus('正在执行代码...', 0);
             
             try {
-                // 重置追踪器
+                // 重置追踪器并设置用户代码
                 await pyodide.runPythonAsync(`
 tracer.steps = []
 tracer.current_step = 0
+tracer.set_user_code(${JSON.stringify(code)})
                 `);
                 
                 // 设置追踪
@@ -533,13 +590,11 @@ sys.settrace(None)
                 
                 // 获取结果
                 const stepsJson = await pyodide.runPythonAsync(`json.dumps(tracer.steps)`);
-                console.log("原始 JSON:", stepsJson.substring(0, 500));
-                
                 executionSteps = JSON.parse(stepsJson);
                 
                 if (executionSteps.length === 0) {
                     showStatus('代码执行完成，但没有捕获到步骤');
-                    visualization.innerHTML = '<div class="empty-vars">没有捕获到执行步骤（代码可能没有执行任何语句）</div>';
+                    visualization.innerHTML = '<div class="empty-vars">没有捕获到执行步骤（代码可能没有执行任何语句，或所有代码都被过滤了）</div>';
                 } else {
                     showStatus(`捕获了 ${executionSteps.length} 个执行步骤`);
                     enableStepMode();
@@ -549,7 +604,7 @@ sys.settrace(None)
             } catch (error) {
                 console.error("执行错误:", error);
                 
-                const lineMatch = error.message.match(/line (\\d+)/);
+                const lineMatch = error.message.match(/line (\d+)/);
                 if (lineMatch) {
                     highlightLine(parseInt(lineMatch[1]));
                 }
@@ -582,6 +637,9 @@ sys.settrace(None)
             
             highlightLine(step.line);
             
+            // 获取当前行代码
+            const currentLineCode = userCodeLines[step.line - 1] || '';
+            
             let html = `
                 <div class="step-info">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -590,17 +648,19 @@ sys.settrace(None)
                             第 ${step.line} 行 · 函数: ${step.function} · 堆栈深度: ${step.stack_depth}
                         </span>
                     </div>
+                    ${currentLineCode ? `<div class="code-preview">${escapeHtml(currentLineCode.trim())}</div>` : ''}
                 </div>
             `;
             
             // 局部变量
-            html += '<h3>局部变量 (Locals)</h3>';
+            const localKeys = Object.keys(step.locals || {});
+            html += `<h3>局部变量 (${localKeys.length})</h3>`;
             html += renderVariables(step.locals);
             
             // 全局变量
-            const globalKeys = Object.keys(step.globals);
+            const globalKeys = Object.keys(step.globals || {});
             if (globalKeys.length > 0) {
-                html += '<h3>全局变量 (Globals)</h3>';
+                html += `<h3>全局变量 (${globalKeys.length})</h3>`;
                 html += renderVariables(step.globals);
             }
             
@@ -637,6 +697,7 @@ sys.settrace(None)
             const typeColors = {
                 'int': '#e8f5e9',
                 'float': '#e8f5e9',
+                'complex': '#e8f5e9',
                 'str': '#fff3e0',
                 'bool': '#fffde7',
                 'NoneType': '#fafafa',
@@ -644,11 +705,14 @@ sys.settrace(None)
                 'tuple': '#f3e5f5',
                 'dict': '#e0f2f1',
                 'set': '#e0f2f1',
+                'bytes': '#e0f2f1',
                 'object': '#eceff1',
+                'class': '#d1ecf1',
                 'function': '#d1ecf1',
                 'circular': '#ffcdd2',
                 'deep': '#cfd8dc',
-                'error': '#ffebee'
+                'error': '#ffebee',
+                'internal': '#f5f5f5'
             };
             
             const bg = typeColors[info.type] || '#f5f5f5';
@@ -660,7 +724,13 @@ sys.settrace(None)
             html += '<div class="var-header">';
             html += `<span class="var-name">${escapeHtml(String(name))}</span>`;
             html += `<span class="var-type">${escapeHtml(String(info.type || 'unknown'))}</span>`;
-            html += `<span class="var-value">${escapeHtml(String(info.repr || info.value || 'N/A'))}</span>`;
+            
+            // 值显示
+            let valueDisplay = info.repr || info.value || 'N/A';
+            if (typeof info.value === 'object' && info.value !== null) {
+                valueDisplay = JSON.stringify(info.value);
+            }
+            html += `<span class="var-value">${escapeHtml(String(valueDisplay))}</span>`;
             html += '</div>';
             
             // 递归渲染容器内容
