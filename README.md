@@ -1,6 +1,6 @@
 <!-- 动态彩虹渐变标题 -->
 <h1 align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Hi%20there%20👋&fontSize=50" width="100%" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=%20Asamo096%20👋&fontSize=50" width="100%" />
 </h1>
 <h2 align="center">
 <a href="https://git.io/typing-svg">
@@ -9,7 +9,7 @@
 </h2>
 <!-- 打字机 -->
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+.;I+love+☕+and+🐱" alt="Typing" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
 > 🌸 相思谩然自苦，算云烟、过眼总成空。
 
 
@@ -23,3 +23,4 @@
 <p align="center">
   <img src="https://komarev.com/ghpvc/?username=Asamo096&label=Visitors&color=ff69b4" alt="访客" />
 </p>
+</div>
