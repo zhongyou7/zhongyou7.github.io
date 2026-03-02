@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyIdle - Python 可视化执行</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body { margin: 0; display: flex; height: 100vh; font-family: system-ui; }
+        #editor { width: 50%; height: 100%; }
+        #visualization { width: 50%; height: 100%; background: #f5f5f5; overflow: auto; }
+        #toolbar { position: fixed; top: 10px; left: 10px; z-index: 100; }
+        button { margin: 5px; padding: 8px 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <button onclick="runCode()">▶ 运行</button>
+        <button onclick="stepForward()">→ 下一步</button>
+        <button onclick="stepBackward()">← 上一步</button>
+        <button onclick="reset()">↺ 重置</button>
+    </div>
+    <div id="editor"></div>
+    <div id="visualization"></div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
