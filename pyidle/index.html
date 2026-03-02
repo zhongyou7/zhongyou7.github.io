@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyIdle - Python 可视化执行</title>
+    
+    <!-- Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+    
+    <!-- Monaco Editor - 使用 jsDelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f5f5f5;
+        }
+        
+        #header {
+            height: 50px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 10px;
+        }
+        
+        #header h1 {
+            font-size: 18px;
+            margin-right: auto;
+        }
+        
+        button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        button:hover { background: #2980b9; }
+        button:disabled { background: #7f8c8d; cursor: not-allowed; }
+        
+        #main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        #editor-container {
+            width: 50%;
+            height: 100%;
+            border-right: 2px solid #ddd;
+        }
+        
+        #visualization {
+            width: 50%;
+            height: 100%;
+            background: white;
+            overflow: auto;
+            padding: 20px;
+        }
+        
+        .currentLine {
+            background: rgba(255, 235, 59, 0.4) !important;
+        }
+        
+        #status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .error-line {
+            background: rgba(231, 76, 60, 0.3) !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>🐍 PyIdle - Python 可视化执行器</h1>
+        <button id="btn-run" onclick="runCode()">▶ 运行</button>
+        <button id="btn-step" onclick="stepMode()" disabled>⏭ 单步执行</button>
+        <button id="btn-next" onclick="stepForward()" disabled>→ 下一步</button>
+        <button id="btn-prev" onclick="stepBackward()" disabled">← 上一步</button>
+        <button onclick="reset()">↺ 重置</button>
+    </div>
+    
+    <div id="main">
+        <div id="editor-container"></div>
+        <div id="visualization">
+            <div style="color: #999; text-align: center; margin-top: 50%;">
+                点击"运行"开始可视化执行
+            </div>
+        </div>
+    </div>
+    
+    <div id="status">加载中...</div>
+
+    <script>
+        // 全局变量
+        let pyodide;
+        let editor;
+        let executionSteps = [];
+        let currentStep = 0;
+        let isStepMode = false;
+        let decorations = [];
+
+        // 显示状态
+        function showStatus(msg) {
+            const el = document.getElementById('status');
+            el.textContent = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
+        // 初始化 Monaco Editor - 修复 loader 配置
+        function initMonaco() {
+            return new Promise((resolve, reject) => {
+                // 配置 Monaco 的 loader
+                require.config({
+                    paths: {
+                        'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs'
+                    }
+                });
+
+                require(['vs/editor/editor.main'], function() {
+                    editor = monaco.editor.create(document.getElementById('editor-container'), {
+                        value: `# 在这里编写 Python 代码
+# 支持变量、列表、字典、函数等可视化
+
+x = [1, 2, 3, 4, 5]
+y = {"name": "Alice", "age": 25, "scores": [85, 90, 88]}
+
+def factorial(n):
+    if n <= 1:
+        return 1
+    result = n * factorial(n - 1)
+    return result
+
+# 执行递归函数
+result = factorial(3)
+print(f"结果: {result}")`,
+                        language: 'python',
+                        theme: 'vs-light',
+                        automaticLayout: true,
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        lineNumbers: 'on',
+                        scrollBeyondLastLine: false,
+                        renderWhitespace: 'selection',
+                        tabSize: 4,
+                        insertSpaces: true
+                    });
+
+                    // 监听编辑器内容变化，清除错误标记
+                    editor.onDidChangeModelContent(() => {
+                        if (decorations.length > 0) {
+                            decorations = editor.deltaDecorations(decorations, []);
+                        }
+                    });
+
+                    resolve();
+                }, function(err) {
+                    reject(err);
+                });
+            });
+        }
+
+        // 初始化 Pyodide
+        async function initPyodide() {
+            showStatus('正在加载 Python 运行时...');
+            pyodide = await loadPyodide();
+            
+            // 注入追踪代码
+            await pyodide.runPythonAsync(`
+import sys
+import json
+import builtins
+import traceback
+
+class ExecutionTracer:
+    def __init__(self):
+        self.steps = []
+        self.current_step = 0
+        self.max_steps = 1000  # 防止无限循环
+        
+    def trace_calls(self, frame, event, arg):
+        if self.current_step > self.max_steps:
+            return None
+            
+        if event == 'line':
+            # 获取源代码
+            try:
+                lines = frame.f_code.co_filename
+                if frame.f_code.co_filename == '<exec>':
+                    line_content = '<user code>'
+                else:
+                    line_content = linecache.getline(frame.f_code.co_filename, frame.f_lineno).strip()
+            except:
+                line_content = ''
+            
+            step_info = {
+                'step': self.current_step,
+                'line': frame.f_lineno,
+                'function': frame.f_code.co_name,
+                'line_content': line_content,
+                'locals': self.safe_serialize(frame.f_locals),
+                'globals': self.safe_serialize({k: v for k, v in frame.f_globals.items() 
+                                               if not k.startswith('__') and k not in ['sys', 'json', 'builtins', 'ExecutionTracer', 'linecache']}),
+                'stack_depth': self.get_stack_depth(frame),
+                'timestamp': self.current_step
+            }
+            self.steps.append(step_info)
+            self.current_step += 1
+            
+        return self.trace_calls
+    
+    def get_stack_depth(self, frame):
+        depth = 0
+        current = frame
+        while current:
+            depth += 1            current = current.f_back
+        return depth
+    
+    def safe_serialize(self, obj, depth=0, seen=None):
+        if seen is None:
+            seen = set()
+        if depth > 3:
+            return {"type": "ellipsis", "repr": "..."}
+        
+        try:
+            obj_id = id(obj)
+            if obj_id in seen:
+                return {"type": "circular", "repr": "<circular ref>"}
+            seen.add(obj_id)
+            
+            if obj is None:
+                return {"type": "None", "repr": "None", "value": None}
+            elif isinstance(obj, bool):
+                return {"type": "bool", "repr": str(obj), "value": obj}
+            elif isinstance(obj, int):
+                return {"type": "int", "repr": str(obj), "value": obj}
+            elif isinstance(obj, float):
+                return {"type": "float", "repr": str(obj), "value": obj}
+            elif isinstance(obj, str):
+                display = repr(obj[:50] + ('...' if len(obj) > 50 else ''))
+                return {"type": "str", "repr": display, "value": obj[:100]}
+            elif isinstance(obj, (list, tuple)):
+                items = [self.safe_serialize(item, depth+1, seen.copy()) 
+                        for item in obj[:20]]
+                return {
+                    "type": "list",
+                    "repr": f"[{len(obj)} items]" if len(obj) > 20 else repr(obj),
+                    "items": items,
+                    "length": len(obj)
+                }
+            elif isinstance(obj, dict):
+                items = {}
+                for k, v in list(obj.items())[:20]:
+                    key_str = str(k)[:20]
+                    items[key_str] = self.safe_serialize(v, depth+1, seen.copy())
+                return {
+                    "type": "dict",
+                    "repr": f"{{{len(obj)} items}}" if len(obj) > 20 else repr(obj),
+                    "items": items,
+                    "length": len(obj)
+                }
+            elif hasattr(obj, '__class__'):
+                class_name = obj.__class__.__name__
+                repr_str = repr(obj)[:50]
+                return {
+                    "type": "object",
+                    "class": class_name,
+                    "repr": repr_str,
+                    "module": obj.__class__.__module__
+                }
+            else:
+                return {"type": "unknown", "repr": str(obj)[:50]}
+        except Exception as e:
+            return {"type": "error", "repr": f"<error: {str(e)}>"}
+        finally:
+            seen.discard(obj_id)
+
+import linecache
+tracer = ExecutionTracer()
+            `);
+            
+            showStatus('Python 运行时加载完成！');
+            console.log("Pyodide 初始化完成");
+        }
+
+        // 运行代码
+        async function runCode() {
+            if (!editor) {
+                showStatus('编辑器尚未加载完成');
+                return;
+            }
+            
+            const code = editor.getValue();
+            executionSteps = [];
+            currentStep = 0;
+            
+            // 清除之前的装饰
+            decorations = editor.deltaDecorations(decorations, []);
+            
+            // 禁用按钮
+            document.getElementById('btn-run').disabled = true;
+            showStatus('正在执行代码...');
+            
+            try {
+                // 重置追踪器
+                await pyodide.runPythonAsync(`
+tracer.steps = []
+tracer.current_step = 0
+                `);
+                
+                // 设置追踪并执行
+                await pyodide.runPythonAsync(`
+sys.settrace(tracer.trace_calls)
+                `);
+                
+                // 使用 runPython 捕获输出
+                await pyodide.runPythonAsync(code);
+                
+                await pyodide.runPythonAsync(`
+sys.settrace(None)
+                `);
+                
+                // 获取结果
+                const stepsJson = await pyodide.runPythonAsync(`json.dumps(tracer.steps)`);
+                executionSteps = JSON.parse(stepsJson);
+                
+                if (executionSteps.length === 0) {
+                    showStatus('代码执行完成，但没有捕获到步骤（可能是空代码）');
+                } else {
+                    showStatus(`捕获了 ${executionSteps.length} 个执行步骤`);
+                    enableStepMode();
+                    visualizeStep(0);
+                }
+                
+            } catch (error) {
+                console.error("执行错误:", error);
+                
+                // 尝试提取行号
+                const lineMatch = error.message.match(/line (\\d+)/);
+                if (lineMatch) {
+                    const errorLine = parseInt(lineMatch[1]);
+                    highlightLine(errorLine, 'error');
+                }
+                
+                showStatus('执行错误: ' + error.message);
+            } finally {
+                document.getElementById('btn-run').disabled = false;
+            }
+        }
+
+        // 启用单步模式
+        function enableStepMode() {
+            isStepMode = true;
+            document.getElementById('btn-step').disabled = true;
+            document.getElementById('btn-next').disabled = false;
+            document.getElementById('btn-prev').disabled = false;
+        }
+
+        // 高亮行
+        function highlightLine(lineNum, type = 'current') {
+            const className = type === 'error' ? 'error-line' : 'currentLine';
+            decorations = editor.deltaDecorations(decorations, [{
+                range: new monaco.Range(lineNum, 1, lineNum, 1),
+                options: {
+                    isWholeLine: true,
+                    className: className,
+                    glyphMarginClassName: type === 'error' ? 'error-glyph' : 'current-glyph'
+                }
+            }]);
+            editor.revealLineInCenter(lineNum);
+        }
+
+        // 可视化步骤
+        function visualizeStep(index) {
+            if (index < 0 || index >= executionSteps.length) return;
+            
+            const step = executionSteps[index];
+            const container = document.getElementById('visualization');
+            
+            // 高亮当前行
+            highlightLine(step.line);
+            
+            // 构建 HTML 内容
+            let html = `
+                <div style="margin-bottom: 20px; padding: 10px; background: #ecf0f1; border-radius: 5px;">
+                    <strong>步骤 ${index + 1} / ${executionSteps.length}</strong> | 
+                    第 ${step.line} 行 | 
+                    函数: <code>${step.function}</code> | 
+                    堆栈深度: ${step.stack_depth}
+                </div>
+            `;
+            
+            // 显示局部变量
+            html += '<h3 style="color: #2c3e50; margin: 20px 0 10px;">局部变量 (Locals)</h3>';
+            html += renderVariables(step.locals);
+            
+            // 显示全局变量（可选，可能太多）
+            if (Object.keys(step.globals).length > 0 && Object.keys(step.globals).length < 10) {
+                html += '<h3 style="color: #2c3e50; margin: 20px 0 10px;">全局变量 (Globals)</h3>';
+                html += renderVariables(step.globals);
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // 渲染变量
+        function renderVariables(vars) {
+            if (Object.keys(vars).length === 0) {
+                return '<p style="color: #7f8c8d;">(无变量)</p>';
+            }
+            
+            let html = '<div style="display: grid; gap: 10px;">';
+            
+            for (const [name, info] of Object.entries(vars)) {
+                html += renderVariable(name, info);
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // 递归渲染单个变量
+        function renderVariable(name, info, indent = 0) {
+            const colors = {
+                'int': '#e8f5e9',
+                'float': '#e8f5e9',
+                'str': '#fff3e0',
+                'bool': '#fffde7',
+                'None': '#fafafa',
+                'list': '#f3e5f5',
+                'dict': '#e0f2f1',
+                'object': '#eceff1',
+                'ellipsis': '#cfd8dc',
+                'circular': '#ffcdd2'
+            };
+            
+            const bg = colors[info.type] || '#f5f5f5';
+            const padding = 10 + indent * 20;
+            
+            let html = `
+                <div style="
+                    background: ${bg};
+                    border: 1px solid #bdc3c7;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin-left: ${indent * 20}px;
+                ">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <strong style="color: #2c3e50; font-family: monospace;">${name}</strong>
+                        <span style="color: #7f8c8d; font-size: 12px;">${info.type}</span>
+                        <code style="background: rgba(255,255,255,0.5); padding: 2px 6px; border-radius: 3px;">${escapeHtml(info.repr)}</code>
+                    </div>
+            `;
+            
+            // 递归渲染容器内容
+            if (info.items && info.type === 'list') {
+                html += '<div style="margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap;">';
+                info.items.forEach((item, idx) => {
+                    html += `<div style="background: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">
+                        [${idx}] ${escapeHtml(item.repr)}
+                    </div>`;
+                });
+                if (info.length > 20) {
+                    html += `<div style="color: #7f8c8d; font-size: 12px;">... 还有 ${info.length - 20} 项</div>`;
+                }
+                html += '</div>';
+            } else if (info.items && info.type === 'dict') {
+                html += '<div style="margin-top: 8px;">';
+                for (const [key, val] of Object.entries(info.items)) {
+                    html += renderVariable(key, val, indent + 1);
+                }
+                if (info.length > 20) {
+                    html += `<div style="color: #7f8c8d; font-size: 12px;">... 还有 ${info.length - 20} 项</div>`;
+                }
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 步骤控制
+        function stepMode() {
+            if (executionSteps.length > 0) {
+                enableStepMode();
+                visualizeStep(0);
+            }
+        }
+
+        function stepForward() {
+            if (currentStep < executionSteps.length - 1) {
+                currentStep++;
+                visualizeStep(currentStep);
+            } else {
+                showStatus('已到达最后一步');
+            }
+        }
+
+        function stepBackward() {
+            if (currentStep > 0) {
+                currentStep--;
+                visualizeStep(currentStep);
+            }
+        }
+
+        function reset() {
+            currentStep = 0;
+            isStepMode = false;
+            executionSteps = [];
+            decorations = editor.deltaDecorations(decorations, []);
+            document.getElementById('visualization').innerHTML = `
+                <div style="color: #999; text-align: center; margin-top: 50%;">
+                    点击"运行"开始可视化执行
+                </div>
+            `;
+            document.getElementById('btn-step').disabled = true;
+            document.getElementById('btn-next').disabled = true;
+            document.getElementById('btn-prev').disabled = true;
+            showStatus('已重置');
+        }
+
+        // 初始化
+        async function init() {
+            try {
+                // 先初始化 Monaco（不依赖 Pyodide）
+                await initMonaco();
+                // 然后加载 Pyodide
+                await initPyodide();
+            } catch (err) {
+                console.error("初始化失败:", err);
+                showStatus('初始化失败: ' + err.message);
+            }
+        }
+
+        // 页面加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
