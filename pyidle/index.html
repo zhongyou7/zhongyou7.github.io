@@ -656,14 +656,12 @@ sys.settrace(None)
             // 全局变量
             const globalKeys = Object.keys(step.globals || {});
             if (globalKeys.length > 0) {
-                html += `<h3>全局变量 (${globalKeys.length})</h3>`;
-                html += renderVariables(step.globals);
+                html += `<h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'; this.textContent=this.textContent.startsWith('▶')?'▼ 全局变量 ('+${globalKeys.length}+')':'▶ 全局变量 ('+${globalKeys.length}+')'">▼ 全局变量 (${globalKeys.length})</h3><div>${renderVariables(step.globals)}</div>`;
             }
             
-            // 局部变量
+            // 局部变量（默认折叠）
             const localKeys = Object.keys(step.locals || {});
-            html += `<h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'; this.textContent=this.textContent.startsWith('▶')?'▼ 局部变量 ('+${localKeys.length}+')':'▶ 局部变量 ('+${localKeys.length}+')'">▼ 局部变量 (${localKeys.length})</h3><div>${renderVariables(step.locals)}</div>`;
-            html += renderVariables(step.locals);
+            html += `<h3 style="cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'; this.textContent=this.textContent.startsWith('▶')?'▼ 局部变量 ('+${localKeys.length}+')':'▶ 局部变量 ('+${localKeys.length}+')'">▶ 局部变量 (${localKeys.length})</h3><div style="display: none;">${renderVariables(step.locals)}</div>`;
             
             visualization.innerHTML = html;
         }
