@@ -1,0 +1,10 @@
+# _config.yml
+exclude:
+  - node_modules
+  - x-ide/node_modules
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - README.md
+  - vendor
