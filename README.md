@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 不求见面惟通谒，名纸朝来满敝庐。
+> 🌸 庭院深深深几许，杨柳堆烟，帘幕无重数。
 
 
 <!-- GitHub 数据三连 -->
