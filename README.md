@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 清晓妆成寒食天，柳球斜袅间花钿，卷帘直出画堂前。
+> 🌸 三月残花落更开，小檐日日燕飞来。
 
 
 <!-- GitHub 数据三连 -->
