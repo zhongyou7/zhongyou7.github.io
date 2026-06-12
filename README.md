@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 三月残花落更开，小檐日日燕飞来。
+> 🌸 伤心千里江南，怨曲重招，断魂在否？
 
 
 <!-- GitHub 数据三连 -->
