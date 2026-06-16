@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 纷纷坠叶飘香砌。夜寂静，寒声碎。
+> 🌸 春蚕到死丝方尽，蜡炬成灰泪始干。
 
 
 <!-- GitHub 数据三连 -->
