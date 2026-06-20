@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 长风破浪会有时，直挂云帆济沧海。
+> 🌸 儿大诗书女丝麻，公但读书煮春茶。
 
 
 <!-- GitHub 数据三连 -->
