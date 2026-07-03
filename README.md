@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 忆昔西池池上饮，年年多少欢娱。
+> 🌸 父老得书知我在，小轩临水为君开。
 
 
 <!-- GitHub 数据三连 -->
