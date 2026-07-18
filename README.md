@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 但愿人长久，千里共婵娟。
+> 🌸 应倾谢女珠玑箧，尽写檀郎锦绣篇。
 
 
 <!-- GitHub 数据三连 -->
