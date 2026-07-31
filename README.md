@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 君在天一涯，妾身长别离。
+> 🌸 唤起封姨清晚景，更将荔子荐新圆。
 
 
 <!-- GitHub 数据三连 -->
