@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 三更灯火五更鸡，正是男儿读书时。
+> 🌸 和气吹绿野，梅雨洒芳田。
 
 
 <!-- GitHub 数据三连 -->
