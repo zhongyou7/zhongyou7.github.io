@@ -22,9 +22,7 @@ ul, ol { list-style: none; }
 @font-face {
   font-family: 'icomoon';
   src:
-    url('icomoon.ttf') format('truetype'),
-    url('icomoon.woff') format('woff'),
-    url('icomoon.svg') format('svg');
+    url('icomoon.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -32,7 +30,7 @@ ul, ol { list-style: none; }
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
-  speak: none;
+  speak-as: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
