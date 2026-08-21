@@ -214,34 +214,52 @@ ul, ol { list-style: none; }
 }
 
 
-/* LIGHT MODE
+/* Theme
 /* ================================================= */
-html { background-color: white; }
-body { color: #333; }
-::selection { background: #222; color: white; }
-h1 { color: #222; }
-.quote { color: #666; }
-.quote-icon { color: #ccc; }
-.quote-line { background: #eee; }
-a { color: #333; }
-.links a { border-bottom-color: #999; }
-.links a:hover { border-bottom-color: #333; }
-.location { color: #666; }
-.relocating { color: #ccc; }
-
-
-/* DARK MODE
-/* ================================================= */
-@media (prefers-color-scheme: dark) {
-  html { background: #121621; }
-  body { color: #6C7486; }
-  ::selection { background: #222; color: #99A3BA; }
-  h1 { color: #E4ECFA; }
-  .quote { color: #6C7486; }
-  .quote-icon { color: #3F4656; }
-  .quote-line { background: #242836; }
-  a { color: #99A3BA; }
-  .links a { border-bottom-color: #6C7486; }
-  .links a:hover { color: #E4ECFA; border-bottom-color: #99A3BA; }
-  .location { color: #6C7486; }
+html {
+  --bg: white;
+  --text: #333;
+  --selection-bg: #222;
+  --selection-color: white;
+  --h1: #222;
+  --quote: #666;
+  --quote-icon: #ccc;
+  --quote-line: #eee;
+  --a: #333;
+  --link-border: #999;
+  --link-hover-color: #333;
+  --link-hover-border: #333;
+  --location: #666;
+  --relocating: #ccc;
 }
+
+/* 夜间模式：由 theme.js 依据当日日出日落时间在 <html> 上切换 .dark 类 */
+html.dark {
+  --bg: #121621;
+  --text: #6C7486;
+  --selection-bg: #222;
+  --selection-color: #99A3BA;
+  --h1: #E4ECFA;
+  --quote: #6C7486;
+  --quote-icon: #3F4656;
+  --quote-line: #242836;
+  --a: #99A3BA;
+  --link-border: #6C7486;
+  --link-hover-color: #E4ECFA;
+  --link-hover-border: #99A3BA;
+  --location: #6C7486;
+  --relocating: #ccc;
+}
+
+html { background-color: var(--bg); }
+body { color: var(--text); transition: color .3s ease; }
+::selection { background: var(--selection-bg); color: var(--selection-color); }
+h1 { color: var(--h1); }
+.quote { color: var(--quote); }
+.quote-icon { color: var(--quote-icon); }
+.quote-line { background: var(--quote-line); }
+a { color: var(--a); }
+.links a { border-bottom-color: var(--link-border); }
+.links a:hover { color: var(--link-hover-color); border-bottom-color: var(--link-hover-border); }
+.location { color: var(--location); }
+.relocating { color: var(--relocating); }
