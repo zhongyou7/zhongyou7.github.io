@@ -1,15 +1,14 @@
 
 <!doctype html>
-<html lang="zh-CN" class="no-js">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <link rel="shortcut icon" href="icomoon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>浅末</title>
-  <meta name="Description" content="Home Page of iissnan">
+  <meta name="Description" content="I'm Asamo.">
   <meta name="color-scheme" content="dark light">
-  <script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>
   <link rel="stylesheet" type="text/css" href="main.css"/>
 </head>
 
@@ -18,23 +17,27 @@
   <!-- <img src="https://q1.qlogo.cn/g?b=qq&nk=3574178263&s=160" style="width:100px; height:100px; border-radius:50%; "> -->
   <img src="https://avatars.githubusercontent.com/u/120152399?v=4" style="width:100px; height:100px; border-radius:50%; ">
     <h1 class="animate-slide-in-down">浅末</h1>
+
     <div class="quote">
       <span class="quote-line quote-line-start animate-slide-in-left"></span>
       <span class="quote-icon quote-icon-start animate-slide-in-down">
         <i class="icon icon-quotes-left"></i>
       </span>
+
       <p class="quote-content animate-slide-in-down">青春之所以幸福，<br><span style="display:block;margin-left:5em">因为它有未来。</span></p>
       <p class="quote-author animate-slide-in-down" style="display:block;width:100%;text-align:right;">—— <em>《死魂灵》</em></p>
+
       <span class="quote-icon quote-icon-end animate-slide-in-up">
         <i class="icon icon-quotes-right"></i>
       </span>
       <span class="quote-line quote-line-end animate-slide-in-right"></span>
     </div>
+    
     <div class="links">
-      <a href="https://github.com/Asamo096" target="_blank" class="animate-slide-in-down">GitHub</a>
-      <a href="mailto:x.asamo096@gmail.com" target="_blank" class="animate-slide-in-down">Gmail</a>
-      <a href="mailto:asamo096@outlook.com" target="_blank" class="animate-slide-in-down">Outlook</a>
-      <a href="https://t.me/asamo096" target="_blank" class="animate-slide-in-down">Telegram</a>
+      <a href="https://github.com/Asamo096" target="_blank" rel="noopener noreferrer" class="animate-slide-in-down">GitHub</a>
+      <a href="mailto:x.asamo096@gmail.com" target="_blank" rel="noopener noreferrer" class="animate-slide-in-down">Gmail</a>
+      <a href="mailto:asamo096@outlook.com" target="_blank" rel="noopener noreferrer" class="animate-slide-in-down">Outlook</a>
+      <a href="https://t.me/asamo096" target="_blank" rel="noopener noreferrer" class="animate-slide-in-down">Telegram</a>
       <!-- <a href="https://xheishou.com/" target="_blank" class="animate-slide-in-down">X黑手</a> -->
       <a href="https://qm.qq.com/cgi-bin/qm/qr?k=6weoPtFhX6bte96iYZtkOZX0R9V9_Kd2&noverify=0&personal_qrcode_source=3" class="animate-slide-in-down">QQ</a>
     </div>
@@ -49,95 +52,32 @@
     </div> -->
   </div>
 
-  <script src="jquery-3.3.1.min.js"></script>
   <script>
-    $(function () {
-      var SLIDE_IN_DOWN = { opacity: 1, top: 0 };
-      var SLIDE_IN_UP = { opacity: 1, bottom: 0 };
-      var SLIDE_IN_LEFT = { left: 0 };
-      var SLIDE_IN_RIGHT = { right: 0 };
-
-      registerCheatCode();
-      executeAnimations();
-
-      function executeAnimations() {
-        $.when()
-          .then(animateTitle)
-          .then(animateQuote)
-          .then(animateLinks)
-          .then(animateLocation);
-      }
-
-      function animateTitle() {
-        return animate('h1', SLIDE_IN_DOWN);
-      }
-
-      function animateQuote() {
-        return $.when(
-          animate('.quote-line-start', SLIDE_IN_LEFT),
-          animate('.quote-line-end',SLIDE_IN_RIGHT),
-          animate('.quote-icon-start', SLIDE_IN_DOWN),
-          animate('.quote-icon-end', SLIDE_IN_UP)
-        )
-          .then(function () {
-            return animate('.quote-content', SLIDE_IN_DOWN);
-          })
-          .then(function () {
-            return animate('.quote-author', SLIDE_IN_DOWN);
-          });
-      }
-
-      function animateLinks() {
-        var DELAY_STEP = 200;
-        var elements = $('.links a');
-        var concurrent = $.makeArray(elements)
-          .map(function (element, index) {
-            return animate(element, SLIDE_IN_DOWN, index * DELAY_STEP);
-          });
-
-        return $.when.apply($, concurrent);
-      }
-
-      function animateLocation() {
-        return $.when(
-          animate('.location-icon', SLIDE_IN_UP),
-          animate('.location-text', SLIDE_IN_DOWN)
-        );
-      }
-
-      function animate(selector, properties, delay, options) {
-        delay = delay || 0;
-        return $(selector).delay(delay)
-          .animate(properties, options)
-          .promise();
-      }
-      
-      
-      function registerCheatCode() {
-        $(document.body).on('keydown', function (event) {
-          var KEY_B = 66;
-
-          if (event.which === KEY_B) {
-            $('.relocate-location').text('Bookmark Page');
-            $('.relocating').css('opacity', 1);
-
-            window.setTimeout(function () {
-              window.location.href = '/bookmarks.html';
-            }, 1000);
+    (function () {
+      // 彩蛋：按 B 键跳转收藏页 A.html
+      document.body.addEventListener('keydown', function (event) {
+        if ((event.key || '').toLowerCase() === 'b') {
+          var tip = document.querySelector('.relocating');
+          if (tip) {
+            var target = tip.querySelector('.relocate-location');
+            if (target) target.textContent = 'Bookmark Page';
+            tip.style.opacity = 1;
           }
-        });
-      }
-     
-      
-    });
 
-console.log('👋 你好，第 %c%d%c 位好奇宝宝！', 'color:#ff5029', Math.floor(Math.random()*1e4), '');
+          window.setTimeout(function () {
+            window.location.href = './A.html';
+          }, 1000);
+        }
+      });
+    })();
 
-console.log('此刻时间：' + new Date().toLocaleString() + ' —— 你把我翻了个底朝天，却没发现我把你的好奇心记下了 :)');
+    console.log('👋 你好，第 %c%d%c 位好奇宝宝！', 'color:#ff5029', Math.floor(Math.random()*1e4), '');
+
+    console.log('此刻时间：' + new Date().toLocaleString() + ' —— 你把我翻了个底朝天，却没发现我把你的好奇心记下了 :)');
 
   </script>
 
-<!-- 
+<!--
   if (you.readingThis) {
     alert('抓到你了！');
   }
