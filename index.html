@@ -54,11 +54,21 @@
     </div> -->
   </div>
 
+  <!-- 禁止右键菜单 -->
+  <script>
+    document.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+      // alert('禁止右键菜单');
+    });
+  </script>
+
   <script>
     (function () {
-      // 彩蛋：按 B 键跳转 A.html
+      // 彩蛋：
+      // 按 A 键跳转 A.html
+      // 按 M 键跳转 ./Music/index.html
       document.body.addEventListener('keydown', function (event) {
-        if ((event.key || '').toLowerCase() === 'b') {
+        if ((event.key || '').toLowerCase() === 'a') {
           var tip = document.querySelector('.relocating');
           if (tip) {
             var target = tip.querySelector('.relocate-location');
@@ -68,6 +78,18 @@
 
           window.setTimeout(function () {
             window.location.href = './A.html';
+          }, 1000);
+        }
+        if ((event.key || '').toLowerCase() === 'm') {
+          var tip = document.querySelector('.relocating');
+          if (tip) {
+            var target = tip.querySelector('.relocate-location');
+            if (target) target.textContent = 'Music Page';
+            tip.style.opacity = 1;
+          }
+
+          window.setTimeout(function () {
+            window.location.href = './Music/index.html';
           }, 1000);
         }
       });

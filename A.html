@@ -25,7 +25,16 @@
 
 <body>
   <div class="vi" style="margin-top: 50px;">
-    
+    <p>可惜，空彩蛋</p>
   </div>
 </body>
+
+  <!-- 禁止右键菜单 -->
+  <script>
+    document.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+      // alert('禁止右键菜单');
+    });
+  </script>
+  
 </html>
