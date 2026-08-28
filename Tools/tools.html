@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="../icomoon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>工具箱</title>
+  <meta name="Description" content="Asamo 的在线小工具箱">
+  <meta name="color-scheme" content="dark light">
+  <link rel="stylesheet" type="text/css" href="../main.css"/>
+  <script src="../theme.js"></script>
+  <style>
+    body { display: flex; justify-content: center; }
+    .tool-wrap { width: min(640px, 92vw); margin-top: 48px; }
+    h1 { font-size: 22px; text-align: center; color: var(--h1); }
+    .tabs { display: flex; gap: 8px; justify-content: center; margin: 18px 0 22px; flex-wrap: wrap; }
+    .tab {
+      padding: 7px 16px; border-radius: 20px; border: 1px solid var(--quote-line);
+      background: transparent; color: var(--text); cursor: pointer; font-size: 13px; transition: .2s;
+    }
+    .tab.active { background: var(--quote-line); color: var(--h1); font-weight: 600; }
+    .panel {
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      border: 1px solid var(--quote-line); border-radius: 14px; padding: 20px;
+    }
+    .panel.hidden { display: none; }
+    .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .row > label { font-size: 13px; color: var(--text); min-width: 92px; }
+    input[type=text], input[type=datetime-local], select, textarea {
+      background: transparent; border: 1px solid var(--quote-line); color: var(--text);
+      border-radius: 8px; padding: 8px 10px; font-size: 13px; font-family: inherit;
+    }
+    input[type=text], input[type=datetime-local], select { flex: 1; min-width: 160px; }
+    textarea { width: 100%; min-height: 90px; resize: vertical; box-sizing: border-box; margin-top: 6px; }
+    .opts, .checks { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; font-size: 13px; color: var(--text); }
+    .opts label, .checks label { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    .mini {
+      padding: 7px 16px; border-radius: 8px; border: 1px solid var(--quote-line);
+      background: transparent; color: var(--text); cursor: pointer; font-size: 13px;
+    }
+    .mini:hover { background: var(--quote-line); }
+    .outputs { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+    .outputs > div { display: flex; gap: 10px; align-items: baseline; font-size: 13px; }
+    .outputs .k { color: var(--location); min-width: 72px; }
+    .outputs code { color: var(--h1); font-family: monospace; word-break: break-all; }
+    .strength { font-size: 13px; color: var(--text); margin-top: 10px; }
+    .note { font-size: 12px; color: var(--location); margin-top: 10px; line-height: 1.6; }
+    .back { text-align: center; margin-top: 20px; font-size: 13px; }
+    .back a { color: var(--a); text-decoration: none; border-bottom: 1px dotted; }
+
+    /* 文本处理 */
+    .stats { font-size: 12px; color: var(--location); margin: 8px 0 12px; }
+    .ops { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+
+    /* 进制转换输出 */
+    #base-out > div { display: flex; gap: 10px; align-items: baseline; font-size: 13px; margin-top: 6px; }
+    #base-out .k { color: var(--location); min-width: 64px; }
+    #base-out code { color: var(--h1); font-family: monospace; word-break: break-all; }
+
+    /* 单位换算 */
+    #unit-fields { display: flex; flex-direction: column; gap: 10px; }
+    .unit-row { display: flex; align-items: center; gap: 10px; }
+    .unit-row label { min-width: 64px; font-size: 13px; color: var(--text); }
+    .unit-row input { flex: 1; }
+
+    /* 科学计算器 */
+    .calc-display {
+      width: 100%; font-family: monospace; font-size: 20px; text-align: right;
+      margin-bottom: 10px; color: var(--h1);
+    }
+    .calc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .calc-btn {
+      padding: 10px 0; border-radius: 8px; border: 1px solid var(--quote-line);
+      background: transparent; color: var(--text); cursor: pointer; font-size: 14px;
+    }
+    .calc-btn:hover { background: var(--quote-line); }
+    .calc-btn.eq { grid-column: span 2; font-weight: 600; color: var(--h1); }
+
+    /* 二维码 */
+    .qr-out { margin-top: 14px; text-align: center; }
+    .qr-out img { max-width: 220px; }
+  </style>
+</head>
+<body>
+  <div class="tool-wrap">
+    <h1>🧰 工具箱</h1>
+    <div class="tabs">
+      <button class="tab active" data-tab="ts">时间戳</button>
+      <button class="tab" data-tab="pw">密码生成</button>
+      <button class="tab" data-tab="b64">Base64</button>
+      <button class="tab" data-tab="hash">哈希</button>
+      <button class="tab" data-tab="text">文本</button>
+      <button class="tab" data-tab="base">进制</button>
+      <button class="tab" data-tab="unit">单位</button>
+      <button class="tab" data-tab="calc">计算器</button>
+      <button class="tab" data-tab="qr">二维码</button>
+    </div>
+
+    <!-- 时间戳 -->
+    <section class="panel" id="panel-ts">
+      <div class="row">
+        <label>Unix 时间戳</label>
+        <input type="text" id="ts-unix" inputmode="numeric" placeholder="例如 1700000000">
+        <div class="opts">
+          <label><input type="radio" name="ts-unit" value="s" checked> 秒</label>
+          <label><input type="radio" name="ts-unit" value="ms"> 毫秒</label>
+        </div>
+      </div>
+      <div class="row">
+        <label>日期时间（本地）</label>
+        <input type="datetime-local" id="ts-datetime">
+        <button id="ts-now" class="mini">使用当前时间</button>
+      </div>
+      <div class="outputs">
+        <div><span class="k">本地</span><code id="ts-local"></code></div>
+        <div><span class="k">UTC</span><code id="ts-utc"></code></div>
+        <div><span class="k">ISO 8601</span><code id="ts-iso"></code></div>
+      </div>
+    </section>
+
+    <!-- 密码生成 -->
+    <section class="panel hidden" id="panel-pw">
+      <div class="row">
+        <label>长度 <b id="pw-len-val">16</b></label>
+        <input type="range" id="pw-len" min="4" max="64" value="16">
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="pw-upper" checked> 大写 A-Z</label>
+        <label><input type="checkbox" id="pw-lower" checked> 小写 a-z</label>
+        <label><input type="checkbox" id="pw-digit" checked> 数字 0-9</label>
+        <label><input type="checkbox" id="pw-sym" checked> 符号 !@#$%^&*</label>
+      </div>
+      <div class="row">
+        <input type="text" id="pw-out" readonly>
+        <button id="pw-gen" class="mini">生成</button>
+        <button id="pw-copy" class="mini">复制</button>
+      </div>
+      <div class="strength">强度：<span id="pw-strength">—</span></div>
+    </section>
+
+    <!-- Base64 -->
+    <section class="panel hidden" id="panel-b64">
+      <div class="opts">
+        <label><input type="radio" name="b64-mode" value="enc" checked> 编码</label>
+        <label><input type="radio" name="b64-mode" value="dec"> 解码</label>
+      </div>
+      <textarea id="b64-in" placeholder="输入文本…"></textarea>
+      <div class="row">
+        <button id="b64-run" class="mini">转换</button>
+        <button id="b64-copy" class="mini">复制结果</button>
+      </div>
+      <textarea id="b64-out" readonly placeholder="结果…"></textarea>
+    </section>
+
+    <!-- 哈希 -->
+    <section class="panel hidden" id="panel-hash">
+      <div class="row">
+        <select id="hash-algo">
+          <option value="SHA-1">SHA-1</option>
+          <option value="SHA-256" selected>SHA-256</option>
+          <option value="SHA-384">SHA-384</option>
+          <option value="SHA-512">SHA-512</option>
+        </select>
+        <button id="hash-run" class="mini">计算</button>
+        <button id="hash-copy" class="mini">复制</button>
+      </div>
+      <textarea id="hash-in" placeholder="输入要计算的文本…"></textarea>
+      <textarea id="hash-out" readonly placeholder="十六进制结果…"></textarea>
+      <p class="note">使用浏览器内置 Web Crypto，无需联网。注：MD5 不在原生 API 支持范围内，故未提供。</p>
+    </section>
+
+    <!-- 文本处理 -->
+    <section class="panel hidden" id="panel-text">
+      <textarea id="text-in" placeholder="输入文本…"></textarea>
+      <div class="stats" id="text-stats"></div>
+      <div class="ops">
+        <button class="mini" data-op="upper">大写</button>
+        <button class="mini" data-op="lower">小写</button>
+        <button class="mini" data-op="title">首字母大写</button>
+        <button class="mini" data-op="trim">去首尾空格</button>
+        <button class="mini" data-op="nospace">去全部空格</button>
+        <button class="mini" data-op="dedup">去重行</button>
+        <button class="mini" data-op="blank">删空行</button>
+        <button class="mini" data-op="reverse">反转</button>
+      </div>
+      <div class="row">
+        <input type="text" id="text-find" placeholder="正则查找">
+        <input type="text" id="text-repl" placeholder="替换为">
+        <button class="mini" id="text-replace">正则替换</button>
+        <button class="mini" id="text-copy">复制</button>
+      </div>
+    </section>
+
+    <!-- 进制转换 -->
+    <section class="panel hidden" id="panel-base">
+      <div class="row">
+        <input type="text" id="base-in" placeholder="输入数字">
+        <select id="base-from">
+          <option value="2">二进制</option>
+          <option value="8">八进制</option>
+          <option value="10" selected>十进制</option>
+          <option value="16">十六进制</option>
+        </select>
+      </div>
+      <div class="outputs" id="base-out"></div>
+    </section>
+
+    <!-- 单位换算 -->
+    <section class="panel hidden" id="panel-unit">
+      <div class="row">
+        <label>类别</label>
+        <select id="unit-cat">
+          <option value="length">长度</option>
+          <option value="time">时间</option>
+          <option value="temperature">温度</option>
+          <option value="pixel">像素 px↔rem</option>
+        </select>
+      </div>
+      <div id="unit-fields"></div>
+    </section>
+
+    <!-- 科学计算器 -->
+    <section class="panel hidden" id="panel-calc">
+      <input type="text" id="calc-display" class="calc-display" readonly placeholder="0">
+      <div class="calc-grid">
+        <button class="calc-btn" data-k="7">7</button>
+        <button class="calc-btn" data-k="8">8</button>
+        <button class="calc-btn" data-k="9">9</button>
+        <button class="calc-btn" data-k="/">÷</button>
+        <button class="calc-btn" data-k="C">C</button>
+        <button class="calc-btn" data-k="4">4</button>
+        <button class="calc-btn" data-k="5">5</button>
+        <button class="calc-btn" data-k="6">6</button>
+        <button class="calc-btn" data-k="*">×</button>
+        <button class="calc-btn" data-k="back">⌫</button>
+        <button class="calc-btn" data-k="1">1</button>
+        <button class="calc-btn" data-k="2">2</button>
+        <button class="calc-btn" data-k="3">3</button>
+        <button class="calc-btn" data-k="-">−</button>
+        <button class="calc-btn" data-k="(">(</button>
+        <button class="calc-btn" data-k="0">0</button>
+        <button class="calc-btn" data-k=".">.</button>
+        <button class="calc-btn" data-k="^">^</button>
+        <button class="calc-btn" data-k="+">+</button>
+        <button class="calc-btn" data-k=")">)</button>
+        <button class="calc-btn" data-k="sin(">sin</button>
+        <button class="calc-btn" data-k="cos(">cos</button>
+        <button class="calc-btn" data-k="tan(">tan</button>
+        <button class="calc-btn" data-k="sqrt(">√</button>
+        <button class="calc-btn" data-k="ln">ln</button>
+        <button class="calc-btn" data-k="log(">log</button>
+        <button class="calc-btn" data-k="pi">π</button>
+        <button class="calc-btn" data-k="e">e</button>
+        <button class="calc-btn eq" data-k="=">=</button>
+      </div>
+    </section>
+
+    <!-- 二维码 -->
+    <section class="panel hidden" id="panel-qr">
+      <textarea id="qr-in" placeholder="输入要生成二维码的文本或链接…"></textarea>
+      <div class="row">
+        <select id="qr-ec">
+          <option value="L">纠错 L</option>
+          <option value="M" selected>纠错 M</option>
+          <option value="Q">纠错 Q</option>
+          <option value="H">纠错 H</option>
+        </select>
+        <button class="mini" id="qr-gen">生成</button>
+      </div>
+      <div id="qr-out" class="qr-out"></div>
+      <p class="note">使用本地 QR 库生成，无需联网，图片为运行时 data-URI，不落盘。</p>
+    </section>
+
+    <div class="back"><a href="../index.html">← 返回主页</a></div>
+  </div>
+
+  <script src="qrcode.js"></script>
+  <script src="tools.js"></script>
+</body>
+</html>

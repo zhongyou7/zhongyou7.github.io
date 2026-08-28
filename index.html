@@ -10,6 +10,94 @@
   <meta name="Description" content="I'm Asamo.">
   <meta name="color-scheme" content="dark light">
   <link rel="stylesheet" type="text/css" href="main.css"/>
+  <style>
+    /* 天气小组件 */
+    #weather-widget {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 50;
+      padding: 10px 14px;
+      min-width: 132px;
+      border-radius: 12px;
+      border: 1px solid var(--quote-line);
+      background: rgba(127, 127, 127, 0.12);
+      background: color-mix(in srgb, var(--bg) 72%, transparent);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: var(--text);
+      font-size: 13px;
+      text-align: left;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    #weather-widget.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+    }
+    .weather-city { font-size: 12px; opacity: .8; margin-bottom: 2px; }
+    .weather-main { display: flex; align-items: baseline; gap: 6px; }
+    .weather-temp { font-size: 22px; font-weight: 600; color: var(--h1); }
+    .weather-desc { font-size: 13px; }
+    .weather-meta { font-size: 11px; opacity: .65; margin-top: 2px; }
+
+    /* 快捷键帮助面板 */
+    #shortcuts-help {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.45);
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+    }
+    #shortcuts-help.hidden { display: none; }
+    .shortcuts-card {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--quote-line);
+      border-radius: 16px;
+      padding: 24px 28px;
+      min-width: 280px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      text-align: left;
+    }
+    .shortcuts-card h2 {
+      font-size: 16px;
+      color: var(--h1);
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .shortcuts-card ul { list-style: none; }
+    .shortcuts-card li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .shortcuts-card kbd {
+      display: inline-block;
+      min-width: 26px;
+      text-align: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--quote-line);
+      color: var(--h1);
+      font-family: monospace;
+      font-size: 13px;
+      border: 1px solid rgba(127, 127, 127, 0.3);
+    }
+    .shortcuts-tip {
+      margin-top: 14px;
+      font-size: 12px;
+      opacity: .6;
+      text-align: center;
+    }
+  </style>
   <script src="theme.js"></script>
 </head>
 
@@ -92,6 +180,12 @@
             window.location.href = './Music/index.html';
           }, 1000);
         }
+        if ((event.key || '').toLowerCase() === 'g') {
+          window.location.href = './Game/snake.html';
+        }
+        if ((event.key || '').toLowerCase() === 't') {
+          window.location.href = './Tools/tools.html';
+        }
       });
     })();
 
@@ -100,6 +194,35 @@
     console.log('此刻时间：' + new Date().toLocaleString() + ' —— 你把我翻了个底朝天，却没发现我把你的好奇心记下了 :)');
 
   </script>
+
+  <script src="bg.js"></script>
+
+  <!-- 天气小组件（按 W 显示/隐藏） -->
+  <div id="weather-widget" class="hidden" aria-hidden="true">
+    <div class="weather-body">
+      <div class="weather-main"><span class="weather-desc">加载中…</span></div>
+    </div>
+  </div>
+
+  <!-- 快捷键帮助面板（按 ? 显示/隐藏，Esc 关闭） -->
+  <div id="shortcuts-help" class="hidden" aria-hidden="true">
+    <div class="shortcuts-card">
+      <h2>键盘快捷键</h2>
+      <ul>
+        <li><kbd>B</kbd><span>打开阅读器</span></li>
+        <li><kbd>M</kbd><span>打开音乐</span></li>
+        <li><kbd>W</kbd><span>天气：显示 / 隐藏</span></li>
+        <li><kbd>G</kbd><span>贪吃蛇小游戏</span></li>
+        <li><kbd>T</kbd><span>工具箱</span></li>
+        <li><kbd>?</kbd><span>显示 / 隐藏本帮助</span></li>
+        <li><kbd>Esc</kbd><span>关闭本帮助</span></li>
+      </ul>
+      <p class="shortcuts-tip">再次按 ? 或点击空白处关闭</p>
+    </div>
+  </div>
+
+  <script src="weather.js"></script>
+  <script src="shortcuts.js"></script>
 
 <!--
   if (you.readingThis) {
