@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 一月可曾闲几日，百年难得闰中秋。
+> 🌸 海风吹不断，江月照还空。
 
 
 <!-- GitHub 数据三连 -->
