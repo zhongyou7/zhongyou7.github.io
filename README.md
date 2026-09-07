@@ -10,7 +10,7 @@
 <!-- 打字机 -->
 <div align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=4000&pause=1000&color=00F5FF&width=435&lines=console.log(%22Welcome%22);I'm+from+Xheshou+." alt="Typing" />
-> 🌸 千家闭户无砧杵，七夕何人望斗牛。
+> 🌸 水风轻，蘋花渐老，月露冷、梧叶飘黄。
 
 
 <!-- GitHub 数据三连 -->
